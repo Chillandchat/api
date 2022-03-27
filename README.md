@@ -27,7 +27,7 @@ I look forward to seeing your contributions to Chill&chat!
 If you have found any bug(s) please post them in the [Issues](https://github.com/Chill-and-chat/Chill-chat/issues) tab in this repository. Please explain the problem and post any error messages or codes, also include a list of instructions to reproduce this bug or problem.
 
 ## To run
-The Chill&chat is made with NodeJS, can download it in the "[api](https://github.com/Chillandchat/Chillandchat/tree/master/api)" folder.
+The Chill&chat is made with NodeJS please follow the steps to clone.
 
 ### To clone:
 
