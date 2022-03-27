@@ -1,7 +1,7 @@
 <p align="center"how><img src="https://github.com/Chillandchat/api/blob/master/logo.svg/" style="width:200px;"/></p>
 
 # Chill&chat API
-![](https://img.shields.io/github/repo-size/Chillandchat/api) ![](https://img.shields.io/github/release/Chillandchat/api) ![](https://img.shields.io/github/issues-pr-closed/Chillandchat/api) ![](https://img.shields.io/github/issues-pr-raw/Chillandchat/api)
+![](https://img.shields.io/github/repo-size/Chillandchat/api) ![](https://img.shields.io/github/v/release/chillandchat/api?label=Latest%20release&logo=Chill%26chat) ![](https://img.shields.io/github/issues-pr-closed/Chillandchat/api) ![](https://img.shields.io/github/issues-pr-raw/Chillandchat/api)
 
 
 This is the Chill&chat API, this api provides information to the mobile app while interacting to the mongoDB database.
