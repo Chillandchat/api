@@ -28,7 +28,7 @@ const joinRoom = async (
 
   try {
     await roomSchema
-      .findOne({ id: req.body.id })
+      .findOne({ id: { $eq: req.body.id } })
       .then(async (data: RoomSchemaType): Promise<void> => {
         if (data.passcode !== "") {
           if (!(await bcrypt.compare(req.body.passcode, data.passcode))) {
