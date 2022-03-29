@@ -27,16 +27,28 @@ I look forward to seeing your contributions to Chill&chat!
 If you have found any bug(s) please post them in the [Issues](https://github.com/Chill-and-chat/Chill-chat/issues) tab in this repository. Please explain the problem and post any error messages or codes, also include a list of instructions to reproduce this bug or problem.
 
 ## To run
-The Chill&chat is made with NodeJS please follow the steps to clone.
+The Chill&chat is made with NodeJS please follow the steps to clone / run.
 
 ### To clone:
 
 ```
-git clone https://github.com/Chillandchat/Chillandchat/
+git clone https://github.com/Chillandchat/api/
 ```
 
-#
-### Credits:
+### Build and run:
+Yarn:
+
+```
+yarn && yarn build && yarn start # Installs packages, builds and starts the app with yarn
+```
+
+Npm:
+
+```
+npm install && npm build && npm start # Installs packages, builds and starts the app with npm
+```
+
+## Credits:
 
 *Alvin cheng - Software engineer*
 
