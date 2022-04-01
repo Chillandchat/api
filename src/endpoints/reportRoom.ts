@@ -6,12 +6,11 @@ import { nodemailer } from "nodemailer";
  *
  * @deprecated This endpoint is no longer used.
  * @type {POST} This is a post typed endpoint.
- * @param {string} user The user that will be reported.
- * @param {string} email The user that reported the user.
+ * @param {string} room The room that will be reported.
  * @returns {string} Returns the result in a string format.
  */
 
-const reportUser = async (
+const reportRoom = async (
   req: Request,
   res: Response,
   _next: NextFunction
@@ -36,7 +35,7 @@ const reportUser = async (
     from: process.env.API_EMAIL,
     to: "chengalvin333@gmail.com",
     subject: "You have a new report from the Chill&chat server",
-    text: `${req.body.user} has reported ${req.body.reportUser}'s message.\nMessage: '${req.body.reason}'\n`,
+    text: `${req.body.room} has got reported and please check mongoDB logs now.`,
   };
   await transporter.sendMail(
     mailOptions,

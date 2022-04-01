@@ -94,7 +94,7 @@ io.on("connection", (socket: Socket): void => {
 });
 
 // DERECATED:
-app.post("/derecated/report-user", reportUser);
+app.post("/derecated/report-room", reportRoom);
 
 const notFound = (_req: any, res: any, _next: any): void => {
   res
