@@ -11,8 +11,7 @@ import getMessages from "./endpoints/getMessages";
 import signup from "./endpoints/signup";
 import getUsers from "./endpoints/getUsers";
 import login from "./endpoints/login";
-import getUserInfo from "./endpoints/getUserInfo";
-import reportUser from "./endpoints/reportUser";
+import getUserInfo from "./endpoints/getUserInfo"
 import blockUser from "./endpoints/blockUser";
 import getAllRooms from "./endpoints/getAllRooms";
 import createRoom from "./endpoints/createRoom";
@@ -22,6 +21,7 @@ import joinRoom from "./endpoints/joinRoom";
 import searchMessge from "./endpoints/SearchMessage";
 import debug from "./utils/debug";
 import message from "./schema/messageSchema";
+import reportRoom from "./endpoints/reportRoom";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -58,6 +58,7 @@ app.post("/api/block_user", blockUser);
 app.post("/api/create-room", createRoom);
 app.post("/api/join-room", joinRoom);
 app.get("/site-map", siteMap);
+app.post("/api/report-room", reportRoom);
 
 // Socket server:
 
@@ -92,9 +93,6 @@ io.on("connection", (socket: Socket): void => {
     }
   );
 });
-
-// DERECATED:
-app.post("/derecated/report-room", reportRoom);
 
 const notFound = (_req: any, res: any, _next: any): void => {
   res

@@ -4,7 +4,6 @@ import { nodemailer } from "nodemailer";
 /**
  * This endpoint will report a user via email once called.
  *
- * @deprecated This endpoint is no longer used.
  * @type {POST} This is a post typed endpoint.
  * @param {string} room The room that will be reported.
  * @returns {string} Returns the result in a string format.
@@ -31,12 +30,14 @@ const reportRoom = async (
         pass: process.env.API_EMAIL_PASS,
       },
     });
+
   const mailOptions: any = {
     from: process.env.API_EMAIL,
-    to: "chengalvin333@gmail.com",
+    to: "alvincheng88@icloud.com",
     subject: "You have a new report from the Chill&chat server",
     text: `${req.body.room} has got reported and please check mongoDB logs now.`,
   };
+  
   await transporter.sendMail(
     mailOptions,
     (err: any, _data: any, _next: any): void => {
@@ -50,4 +51,4 @@ const reportRoom = async (
   else res.status(500).send(`SERVER ERROR: ${error}`);
 };
 
-export default reportUser;
+export default reportRoom;
