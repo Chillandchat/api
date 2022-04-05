@@ -11,7 +11,7 @@ import getMessages from "./endpoints/getMessages";
 import signup from "./endpoints/signup";
 import getUsers from "./endpoints/getUsers";
 import login from "./endpoints/login";
-import getUserInfo from "./endpoints/getUserInfo"
+import getUserInfo from "./endpoints/getUserInfo";
 import blockUser from "./endpoints/blockUser";
 import getAllRooms from "./endpoints/getAllRooms";
 import createRoom from "./endpoints/createRoom";
@@ -79,7 +79,6 @@ io.on("connection", (socket: Socket): void => {
             content: payload.content,
             room: payload.room,
           });
-
           await newMessage.save().then((): void => {
             io.emit(`sent:token(${responseToken})`);
             debug.log(`Message: ${payload.id} saved and emited.`);

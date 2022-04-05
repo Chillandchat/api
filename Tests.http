@@ -6,19 +6,19 @@ POST http://localhost:3000/api/login?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e
 content-type: application/json
 
 {
-"username":"Alvin",
-"password":"8888"
+"username":"Brianna",
+"password":"2013"
 }
 
 ###
 
-POST http://localhost:8080/api/signup?key=00 http/1.1
+POST http://localhost:3000/api/signup?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e92EzyDV.QPPzREqW9RInV.mvkP9iwDms0Xxyx27pCrmoqDcLj2 http/1.1
 content-type: application/json
 
 {
-    "id":"8ff39508-c80b-4419-9646-0bdd5277817f",
-    "username":"Alvin",
-    "password":"8888",
+    "id":"8ff39508-c80b-4419-9646-0bdd5277817a",
+    "username":"Brianna",
+    "password":"2013",
     "blocked":false,
     "verified":true,
     "bot": false
@@ -49,6 +49,15 @@ content-type: application/json
 "blockStatus":false
 }
 
+###
+POST http://localhost:3000/api/join-room?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e92EzyDV.QPPzREqW9RInV.mvkP9iwDms0Xxyx27pCrmoqDcLj2  http/1.1
+content-type: application/json
+
+{
+"user":"Alvin",
+"passcode":"8888",
+"id": "b10ac028-f41a-49ed-a501-61347dece821"
+}
 ###
 GET http://localhost:8080/api/users/get/admin/ http/1.1
 
