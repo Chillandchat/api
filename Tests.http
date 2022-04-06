@@ -2,7 +2,7 @@ GET http://localhost:3001/api/users/get/all http/1.1
 
 ###
 
-POST http://localhost:3000/api/login?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e92EzyDV.QPPzREqW9RInV.mvkP9iwDms0Xxyx27pCrmoqDcLj2 http/1.1
+POST https://chillandchat-api.herokuapp.com/api/login?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e92EzyDV.QPPzREqW9RInV.mvkP9iwDms0Xxyx27pCrmoqDcLj2
 content-type: application/json
 
 {
@@ -50,7 +50,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3000/api/join-room?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e92EzyDV.QPPzREqW9RInV.mvkP9iwDms0Xxyx27pCrmoqDcLj2  http/1.1
+POST https://chillandchat-api.herokuapp.com/api/join-room?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e92EzyDV.QPPzREqW9RInV.mvkP9iwDms0Xxyx27pCrmoqDcLj2  http/1.1
 content-type: application/json
 
 {

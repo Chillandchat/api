@@ -43,7 +43,7 @@ debug.init();
 mongoose.connect(String(process.env.DATABASE_URI));
 
 app.use(express.json());
-app.use(cors({}));
+app.use(cors({ origin: "*" }));
 app.use(apiLimiter);
 
 app.get("/", home);
