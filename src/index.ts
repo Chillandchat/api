@@ -28,7 +28,7 @@ const httpServer: any = createServer(app);
 const io = new Server(httpServer);
 
 const PORT: number = Number(process.env.PORT) || 3000;
-const SOCKET_PORT: number = Number(process.env.SOCKET_PORT) || 3001;
+// const SOCKET_PORT: number = Number(process.env.SOCKET_PORT) || 3001;
 
 const apiLimiter = rateLimit({
   windowMs: 1 * 30 * 1000,
@@ -101,12 +101,6 @@ const notFound = (_req: any, res: any, _next: any): void => {
 };
 app.use(notFound);
 
-app.listen(PORT, (): void => {
-  debug.log(
-    `Server Ready and listening on port ${PORT}, press CTRL + C to stop operation.`
-  );
-});
-
-httpServer.listen(SOCKET_PORT, (): void => {
-  debug.log(`Socket listening on port ${SOCKET_PORT}`);
+httpServer.listen(PORT, (): void => {
+  debug.log(`Server listening on port ${PORT}`);
 });
