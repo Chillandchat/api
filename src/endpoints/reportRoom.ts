@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import nodemailer from "nodemailer";
 
+import debug from "../utils/debug";
+
 /**
  * This endpoint will report a user via email once called.
  *
@@ -46,8 +48,10 @@ const reportRoom = async (
       } else emailOk = true;
     }
   );
-  if (emailOk) res.status(200).send();
-  else res.status(500).send(`SERVER ERROR: ${error}`);
+  if (emailOk) {
+    res.status(200).send();
+    debug.log(`Room ${req.body.room} reported.`);
+  } else res.status(500).send(`SERVER ERROR: ${error}`);
 };
 
 export default reportRoom;
