@@ -21,11 +21,8 @@ const reportRoom = async (
     return;
   }
 
-  let emailOk: boolean = false;
-  let error: string;
-
   const transporter: any = nodemailer.createTransport({
-    service: "icloud",
+    service: "gmail",
     auth: {
       user: process.env.API_EMAIL,
       pass: process.env.API_EMAIL_PASS,
@@ -36,22 +33,21 @@ const reportRoom = async (
     from: process.env.API_EMAIL,
     to: "alvincheng88@icloud.com",
     subject: "You have a new report from the Chill&chat server",
-    text: `${req.body.room} has got reported and please check mongoDB logs now.`,
+    text: `${req.body.room} has just got reported and please check mongoDB logs now.`,
+    secureConnection: true,
   };
 
   await transporter.sendMail(
     mailOptions,
     (err: any, _data: any, _next: any): void => {
-      if (err) {
-        error = err;
-        emailOk = false;
-      } else emailOk = true;
+      if (err === null) {
+        res.status(200).send("Report sent.");
+        debug.log(`Report sent.`);
+      } else {
+        res.status(500).send(`Error: ${err}`);
+      }
     }
   );
-  if (emailOk) {
-    res.status(200).send();
-    debug.log(`Room ${req.body.room} reported.`);
-  } else res.status(500).send(`SERVER ERROR: ${error}`);
 };
 
 export default reportRoom;
