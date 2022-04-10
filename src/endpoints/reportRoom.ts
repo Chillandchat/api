@@ -24,7 +24,7 @@ const reportRoom = async (
 
   const transporter: typeof nodemailer.createTransport =
     nodemailer.createTransport({
-      service: "gmail",
+      service: "icloud",
       auth: {
         user: process.env.API_EMAIL,
         pass: process.env.API_EMAIL_PASS,
