@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { nodemailer } from "nodemailer";
+import nodemailer from "nodemailer";
 
 /**
  * This endpoint will report a user via email once called.
@@ -22,14 +22,13 @@ const reportRoom = async (
   let emailOk: boolean = false;
   let error: string;
 
-  const transporter: typeof nodemailer.createTransport =
-    nodemailer.createTransport({
-      service: "icloud",
-      auth: {
-        user: process.env.API_EMAIL,
-        pass: process.env.API_EMAIL_PASS,
-      },
-    });
+  const transporter: any = nodemailer.createTransport({
+    service: "icloud",
+    auth: {
+      user: process.env.API_EMAIL,
+      pass: process.env.API_EMAIL_PASS,
+    },
+  });
 
   const mailOptions: any = {
     from: process.env.API_EMAIL,
@@ -37,7 +36,7 @@ const reportRoom = async (
     subject: "You have a new report from the Chill&chat server",
     text: `${req.body.room} has got reported and please check mongoDB logs now.`,
   };
-  
+
   await transporter.sendMail(
     mailOptions,
     (err: any, _data: any, _next: any): void => {
