@@ -25,6 +25,7 @@ const reportRoom = async (
     service: "gmail",
     port: 465,
     secure: true,
+    host: "smtp.gmail.com",
     auth: {
       user: process.env.API_EMAIL,
       pass: process.env.API_EMAIL_PASS,
