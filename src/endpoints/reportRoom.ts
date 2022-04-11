@@ -23,6 +23,8 @@ const reportRoom = async (
 
   const transporter: any = nodemailer.createTransport({
     service: "gmail",
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.API_EMAIL,
       pass: process.env.API_EMAIL_PASS,
