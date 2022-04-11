@@ -1,6 +1,0 @@
-POST http://localhost:3000/api/report-room?key=$2a$12$/gEPLKAlLnet0.lzftO7G.qhK3EA3q/e92EzyDV.QPPzREqW9RInV.mvkP9iwDms0Xxyx27pCrmoqDcLj2
-Content-Type: application/json
-
-{
-    "room":"hi"
-}

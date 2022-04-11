@@ -2,12 +2,13 @@
 build
 web
 node_modules/
+*.p8
 .expo/
 dist/
-npm-debug.*
+Tests.http
 *.jks
-*.p8
 *.p12
+npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
@@ -15,7 +16,3 @@ web-build/
 .DS_Store
 yarn-error.log
 log.txt
-Tests.http
-Tests.http
-Tests.http
-Tests.http
