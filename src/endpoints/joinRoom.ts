@@ -37,15 +37,21 @@ const joinRoom = async (
           }
         }
 
-        await roomSchema
-          .findOneAndUpdate(
-            { id: req.body.id },
-            { $push: { users: req.body.user } }
-          )
-          .then(() => {
-            res.status(200).send("Successfully joined room.");
-            debug.log(`User ${req.body.user} has joined room ${req.body.id}.`);
-          });
+        if (data.users.indexOf(req.body.user) !== -1) {
+          await roomSchema
+            .findOneAndUpdate(
+              { id: req.body.id },
+              { $push: { users: req.body.user } }
+            )
+            .then(() => {
+              res.status(200).send("Successfully joined room.");
+              debug.log(
+                `User ${req.body.user} has joined room ${req.body.id}.`
+              );
+            });
+        } else {
+          res.status(400).send("User already a member of the room.");
+        }
       });
   } catch (err: unknown) {
     res.status(500).send(`SERVER ERROR: ${err}`);
