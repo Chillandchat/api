@@ -29,7 +29,6 @@ const joinRoom = async (
     await roomSchema
       .findOne({ id: { $eq: req.body.id } })
       .then(async (data: RoomSchemaType): Promise<void> => {
-        console.log(req.body.passcode);
         if (data.passcode !== "") {
           if (!(await bcrypt.compare(req.body.passcode, data.passcode))) {
             res.status(400).send("Incorrect passcode.");
