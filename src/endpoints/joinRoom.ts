@@ -36,7 +36,7 @@ const joinRoom = async (
           }
         }
 
-        if (data.users.indexOf(req.body.user) !== -1) {
+        if (data.users.indexOf(req.body.user) === -1) {
           await roomSchema
             .findOneAndUpdate(
               { id: req.body.id },
