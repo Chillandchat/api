@@ -1,9 +1,37 @@
+/**
+ * Welcome to the... 
+ *   ____ _     _ _ _  ___        _           _   
+ *  / ___| |__ (_) | |( _ )   ___| |__   __ _| |_ 
+ * | |   | '_ \| | | |/ _ \/\/ __| '_ \ / _` | __|
+ * | |___| | | | | | | (_>  < (__| | | | (_| | |_ 
+ *  \____|_| |_|_|_|_|\___/\/\___|_| |_|\__,_|\__|  API 
+ * 
+ * codebase!
+ * 
+ * This is the codebase guide for developers viewing this codebase.
+ * 
+ * We have organized the codebase into the following folders:
+ * Source:
+ *    - static: This is where the static files are stored.
+ *    - utils: This is where the utility functions/types are stored.
+ *    - schema: This is where the database schema is stored.
+ *    - endpoints: This is where the endpoints are stored.
+ * 
+ * Tech stack:
+ *    - TypeScript: This is the main language used in the application.
+ *    - Express: This is the framework used to create the API.
+ *    - MongoDB: This is the database used to store the data.
+ *    - Mongoose: This is the framework used to interact with the database.
+ *    - Socket.io: This is the framework used to create the realtime API.
+ * 
+ * Happy hacking!
+ */
+
 import { Server, Socket } from "socket.io";
 import mongoose from "mongoose";
 import { createServer } from "http";
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 
 import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
@@ -23,12 +51,12 @@ import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
 
+
 const app: express.Express = express();
 const httpServer: any = createServer(app);
 const io = new Server(httpServer);
 
 const PORT: number = Number(process.env.PORT) || 3000;
-// const SOCKET_PORT: number = Number(process.env.SOCKET_PORT) || 3001;
 
 const apiLimiter = rateLimit({
   windowMs: 1 * 30 * 1000,
