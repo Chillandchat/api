@@ -5,14 +5,14 @@ import user from "../schema/authSchema";
 import debug from "../utils/debug";
 
 /**
- * This endpoint will return the user information from the server once called.
+ * This endpoint will return the user information from the server once called but with the user id.
  *
  * @type {GET} This is a get typed endpoint.
- * @param {string} user The username of the user you want to search.
+ * @param {string} user The user id of the user to search.
  * @returns {AuthSchemaType | string} Returns the user information or a error message.
  */
 
-const getUserInfo = async (
+const getUserInfoWithId = async (
   req: Request,
   res: Response,
   _next: NextFunction
@@ -24,7 +24,7 @@ const getUserInfo = async (
 
   try {
     await user
-      .findOne({ username: { $eq: req.query.user } })
+      .findOne({ id: { $eq: req.query.user } })
       .exec()
       .then((data: AuthSchemaType | null | undefined): void => {
         if (data !== null || data !== undefined) {
@@ -42,4 +42,4 @@ const getUserInfo = async (
   }
 };
 
-export default getUserInfo;
+export default getUserInfoWithId;
