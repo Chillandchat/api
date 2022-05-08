@@ -8,7 +8,7 @@ import debug from "../utils/debug";
  * This endpoint will return the user information from the server once called.
  *
  * @type {GET} This is a get typed endpoint.
- * @param {string} user The username of the user you want to search.
+ * @param {string} username The username of the user you want to search.
  * @returns {AuthSchemaType | string} Returns the user information or a error message.
  */
 
@@ -32,7 +32,7 @@ const getUserInfo = async (
 
           debug.log(`User ${req.query.user} information sent.`);
         } else {
-          res.status(400).send("User not found");
+          res.status(404).send("User not found");
         }
       });
   } catch (err: unknown) {

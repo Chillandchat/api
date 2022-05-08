@@ -50,7 +50,6 @@ import searchMessge from "./endpoints/SearchMessage";
 import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
-import getUserInfoWithId from "./endpoints/getUserInfoWithId";
 
 
 const app: express.Express = express();
@@ -83,7 +82,6 @@ app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
 app.post("/api/search-message", searchMessge);
 app.post("/api/block_user", blockUser);
-app.get("/api/get-user-info-id", getUserInfoWithId);
 app.post("/api/create-room", createRoom);
 app.post("/api/join-room", joinRoom);
 app.get("/site-map", siteMap);
