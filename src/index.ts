@@ -46,7 +46,7 @@ import createRoom from "./endpoints/createRoom";
 import siteMap from "./endpoints/sitemap";
 import rateLimit from "express-rate-limit";
 import joinRoom from "./endpoints/joinRoom";
-import searchMessge from "./endpoints/SearchMessage";
+import searchMessage from "./endpoints/SearchMessage";
 import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
@@ -80,7 +80,7 @@ app.get("/api/get-messages", getMessages);
 app.get("/api/get-users", getUsers);
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
-app.post("/api/search-message", searchMessge);
+app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
 app.post("/api/create-room", createRoom);
 app.post("/api/join-room", joinRoom);
@@ -88,7 +88,6 @@ app.get("/site-map", siteMap);
 app.post("/api/report-room", reportRoom);
 
 // Socket server:
-
 io.on("connection", (socket: Socket): void => {
   socket.on(
     "server-message",
@@ -108,7 +107,7 @@ io.on("connection", (socket: Socket): void => {
           });
           await newMessage.save().then((): void => {
             io.emit(`sent:token(${responseToken})`);
-            debug.log(`Message: ${payload.id} saved and emited.`);
+            debug.log(`Message: ${payload.id} saved and emitted.`);
           });
         } catch (err: unknown) {
           io.emit(`error:token(${responseToken})`, err);
