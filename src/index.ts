@@ -1,29 +1,29 @@
 /**
- * Welcome to the... 
- *   ____ _     _ _ _  ___        _           _   
- *  / ___| |__ (_) | |( _ )   ___| |__   __ _| |_ 
+ * Welcome to the...
+ *   ____ _     _ _ _  ___        _           _
+ *  / ___| |__ (_) | |( _ )   ___| |__   __ _| |_
  * | |   | '_ \| | | |/ _ \/\/ __| '_ \ / _` | __|
- * | |___| | | | | | | (_>  < (__| | | | (_| | |_ 
- *  \____|_| |_|_|_|_|\___/\/\___|_| |_|\__,_|\__|  API 
- * 
+ * | |___| | | | | | | (_>  < (__| | | | (_| | |_
+ *  \____|_| |_|_|_|_|\___/\/\___|_| |_|\__,_|\__|  API
+ *
  * codebase!
- * 
+ *
  * This is the codebase guide for developers viewing this codebase.
- * 
+ *
  * We have organized the codebase into the following folders:
  * Source:
  *    - static: This is where the static files are stored.
  *    - utils: This is where the utility functions/types are stored.
  *    - schema: This is where the database schema is stored.
  *    - endpoints: This is where the endpoints are stored.
- * 
+ *
  * Tech stack:
  *    - TypeScript: This is the main language used in the application.
  *    - Express: This is the framework used to create the API.
  *    - MongoDB: This is the database used to store the data.
  *    - Mongoose: This is the framework used to interact with the database.
  *    - Socket.io: This is the framework used to create the realtime API.
- * 
+ *
  * Happy hacking!
  */
 
@@ -50,7 +50,6 @@ import searchMessage from "./endpoints/SearchMessage";
 import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
-
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -89,6 +88,21 @@ app.post("/api/report-room", reportRoom);
 
 // Socket server:
 io.on("connection", (socket: Socket): void => {
+  socket.on(
+    "server-keyboard",
+    (
+      room: string,
+      user: string,
+      key: string,
+      responseToken: string,
+      mode: "start" | "stop"
+    ): void => {
+      if (key === process.env.KEY)
+        io.emit(`keyboard-${mode}:room(${room})`, user);
+      else io.emit(`error:token(${responseToken})`, "Invalid key");
+    }
+  );
+
   socket.on(
     "server-message",
     async (
