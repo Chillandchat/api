@@ -89,24 +89,6 @@ app.post("/api/report-room", reportRoom);
 // Socket server:
 io.on("connection", (socket: Socket): void => {
   socket.on(
-    "server-keyboard",
-    (
-      room: string,
-      user: string,
-      key: string,
-      responseToken: string,
-      mode: "start" | "stop"
-    ): void => {
-      if (key === process.env.KEY) {
-        mode === "start"
-          ? debug.log(`${user} is now typing.`)
-          : debug.log(`${user} is now stopped typing`);
-        io.emit(`keyboard-${mode}:room(${room})`, user);
-      } else io.emit(`error:token(${responseToken})`, "Invalid key");
-    }
-  );
-
-  socket.on(
     "server-message",
     async (
       payload: MessageSchemaType,
@@ -132,6 +114,24 @@ io.on("connection", (socket: Socket): void => {
       } else {
         io.emit(`error:token(${responseToken})`, "Invalid key");
       }
+    }
+  );
+
+  socket.on(
+    "server-keyboard",
+    (
+      room: string,
+      user: string,
+      key: string,
+      responseToken: string,
+      mode: "start" | "stop"
+    ): void => {
+      if (key === process.env.KEY) {
+        mode === "start"
+          ? debug.log(`${user} is now typing.`)
+          : debug.log(`${user} is now stopped typing`);
+        io.emit(`keyboard-${mode}:room(${room})`, user);
+      } else io.emit(`error:token(${responseToken})`, "Invalid key");
     }
   );
 });
