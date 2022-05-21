@@ -127,9 +127,13 @@ io.on("connection", (socket: Socket): void => {
       mode: "start" | "stop"
     ): void => {
       if (key === process.env.KEY) {
-        mode === "start"
-          ? debug.log(`${user} is now typing.`)
-          : debug.log(`${user} is now stopped typing`);
+        if (mode === "start") {
+          debug.log(`${user} is now typing.`);
+          io.emit(`typing:token(${responseToken})`);
+        } else {
+          debug.log(`${user} is now stopped typing`);
+          io.emit(`stopped-typing:token(${responseToken})`);
+        }
         io.emit(`keyboard-${mode}:room(${room})`, user);
       } else io.emit(`error:token(${responseToken})`, "Invalid key");
     }
