@@ -4,10 +4,12 @@
 Welcome to the Chill&chat API documentation, This documentation will have the information about the API endpoints and how to call each of the endpoints using Javascript. You may use the index below to navigate the documentation.
 
 ### Contents 
-- [Using the documentation](https://github.com/Chillandchat/api/edit/master/docs.md#using-the-documentation)
-- [Login endpoint](https://github.com/Chillandchat/api/edit/master/docs.md#login-endpoint)
-- [Block user endpoint](https://github.com/Chillandchat/api/edit/master/docs.md#block-user-endpoint)
-- [Create room endpoint](https://github.com/Chillandchat/api/edit/master/docs.md#create-rooom-endpoint)
+- [Using the documentation](https://github.com/Chillandchat/api/master/docs.md#using-the-documentation)
+- [Login endpoint](https://github.com/Chillandchat/api/master/docs.md#login-endpoint)
+- [Block user endpoint](https://github.com/Chillandchat/api/master/docs.md#block-user-endpoint)
+- [Create room endpoint](https://github.com/Chillandchat/api/master/docs.md#create-rooom-endpoint)
+- [Get all roms endpoint](https://github.com/Chillandchat/api/master/docs.md#get-all-room-endpoint)
+- [Get messages endpoint](https://github.com/Chillandchat/api/master/docs.md#get-message-endpoint)
 
 ### Using the documentation 
 This documentation can used to get all the api information to be used in your programs. Every endpoint will have an example code snippet, you are welcome to copy and paste in into your program. Furthermore, the example snippets are written in Javascript and will be using the fetch/post functions to send requests to the server.
@@ -44,18 +46,46 @@ post("http://<URL>/api/block_user?key=<YOUR_API_KEY>", {
 });
 
 ```
-## Create rooom endpoint
+## Create room endpoint
 The create room endpoint is also pretty self explanatory, this endpoint will create a new document of a room in the MongoDB database following the structure and scheme of ```/src/schema/roomSchema.ts```. This endpoint will return a status of '201' on success, '401' on invalid api key or '500' on a internal sever error. Furthermore, there are 4 arguments to be supplied to the endpoint. The 'id' argument is the id of the room, usually created with the [uuid package](https://www.npmjs.com/package/uuid). The 'name' argument is the display name of the room, the 'user' argument is the starting user in the room, and the 'passcode' argument is the passcode of the room. I hope all of these arguments are very self explanatory. 
 
 ### Example
 ```js
 
-post("http://<URL>/api/create_room?key=<YOUR_API_KEY>", {
+post("http://<URL>/api/create-room?key=<YOUR_API_KEY>", {
     id: "<ID>", // I suggest creating a id using v4() function from the uuid library.
     name: "<ROOM_NAME>",
     user: "<USER>",
     passcode:"<PASSCODE>"
 }).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error(err);
+});
+
+```
+## Get all room endpoint 
+This is the get all room endpoint is a endpoint where a user is inputted, and all the rooms that the user belongs in will be returned. The source of the endpoint can found at: ```/src/endpoints/getAllRooms.ts```. Furthermore, the endpoint will return a status of '200' on success, '401' on invalid api key or '500' on server internal error. As I said above, the 'user' argument is the user to search up.
+
+### Example 
+```js
+
+fetch("http://<URL>/api/get-rooms?key=<YOUR_API_KEY>&user=<USER>")
+.then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error(err);
+});
+
+```
+## Get message endpoint
+This is the get message endpoint, this endpoint will return all the messages in the room provided. This endpoint will return '200' on success, '401' on invalid api key or '500' on internal serve error. Furthermore, the source files of this endpoint is stored at ```/src/endpoints/getMessages.ts```. And there's only one argument for this endpoint which the 'room' argument, this argument will specify the room to search messages from, again this endpoint is quite self explanatory.
+
+### Example 
+```js
+
+fetch("http://<URL>/api/get-messaegs?key=<YOUR_API_KEY>&room=<ROOM>")
+.then((res) => {
     console.log(res);
 }).catch((err) => {
     console.error(err);
