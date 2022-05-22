@@ -1,14 +1,13 @@
 {
   "name": "chillandchat-api",
   "version": "1.0.0",
-  "main": "./src/index.ts",
+  "main": "./build/index.js",
   "author": "Alvin cheng",
   "license": "MIT",
   "module": "module",
   "scripts": {
     "start": "echo 'Starting app...' && node .",
-    "build": "tsc && echo 'Building and compiling typescript code...\n' && echo 'Done.\n'",
-    "start-tsnode":"echo 'Starting app with tsnode' && ts-node ."
+    "build": "tsc && echo 'Building and compiling typescript code...\n' && echo 'Done.\n'"
   },
   "repository": {
     "type": "git",
