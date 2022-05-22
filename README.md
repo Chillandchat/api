@@ -45,6 +45,8 @@ Npm:
 ```
 npm install && npm build && npm start # Installs packages, builds and starts the app with npm
 ```
+### Docs
+The documentation for the API can be found in the ```docs.md``` file or by clicking [here](https://github.com/Chillandchat/api/blob/master/docs.md).
 
 ## User safety agreement 
 
