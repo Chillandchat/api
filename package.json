@@ -6,8 +6,9 @@
   "license": "MIT",
   "module": "module",
   "scripts": {
-    "start": "echo 'Starting app...' && ts-node .",
-    "build": "tsc && echo 'Building and compiling typescript code...\n' && echo 'Done.\n'"
+    "start": "echo 'Starting app...' && node .",
+    "build": "tsc && echo 'Building and compiling typescript code...\n' && echo 'Done.\n'",
+    "start-tsnode":"echo 'Starting app with tsnode' && ts-node ."
   },
   "repository": {
     "type": "git",
