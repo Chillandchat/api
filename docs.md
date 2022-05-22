@@ -1,6 +1,6 @@
 <p align="center"how><img src="https://github.com/Chillandchat/api/blob/master/logo.svg/" style="width:200px;"/></p>
 
-## Chill&chat API documentation
+# Chill&chat API documentation
 Welcome to the Chill&chat API documentation, This documentation will have the information about the API endpoints and how to call each of the endpoints using Javascript. You may use the index below to navigate the documentation.
 
 ### Contents 
