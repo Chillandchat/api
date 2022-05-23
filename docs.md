@@ -11,6 +11,7 @@ Welcome to the Chill&chat API documentation, This documentation will have the in
 - [Get all roms endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-all-room-endpoint)
 - [Get messages endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-message-endpoint)
 - [Get user info endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-user-info-endpoint)
+- [Get users info endpoint(Deprecated)](https://github.com/Chillandchat/api/blob/master/docs.md#get-users-endpointdeprecated)
 
 ### Using the documentation 
 This documentation can used to get all the api information to be used in your programs. Every endpoint will have an example code snippet, you are welcome to copy and paste in into your program. Furthermore, the example snippets are written in Javascript and will be using the fetch/post functions to send requests to the server.
@@ -85,7 +86,7 @@ This is the get message endpoint, this endpoint will return all the messages in 
 ### Example 
 ```js
 
-fetch("http://<URL>/api/get-messaegs?key=<YOUR_API_KEY>&room=<ROOM>")
+fetch("http://<URL>/api/get-messages?key=<YOUR_API_KEY>&room=<ROOM>")
 .then((res) => {
     console.log(res);
 }).catch((err) => {
@@ -93,13 +94,27 @@ fetch("http://<URL>/api/get-messaegs?key=<YOUR_API_KEY>&room=<ROOM>")
 });
 
 ```
-# Get user info endpoint
+## Get user info endpoint
 This is the the get user endpoint, as the name suggests the endpoint will get the uesr info of a specified user, the source of this endpoint can be found at: ```/src/endpoints/getUserInfo.ts```. This endpoint will return '200' on success, '401' on incorrect api key or '500' on internal sevrer error. Furthermore, this endpoint will expect a 'username' argument which is the username of the user to search. 
 
 ### Example 
 ```js
 
-fetch("http://<URL>/api/get-messaegs?key=<YOUR_API_KEY>&ruser=<USER>")
+fetch("http://<URL>/api/get-user-info?key=<YOUR_API_KEY>&user=<USER>")
+.then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error(err);
+});
+
+```
+## Get users endpoint(Deprecated) 
+This is the get user endpoint, this endpoint will get all the user's information from the MongoDB database. This endpoint does not have any arguments, the endpoint will return '200' on success, '401' on invalid api key or '500' on internal server error. Furthermore, endpoint's source is at: ```/src/endpoints/getUsers.ts```. As a side note, this endpoint is no longer used by the Chill&chat frontend.
+
+### Example
+```js
+
+fetch("http://<URL>/api/get-users?key=<YOUR_API_KEY>")
 .then((res) => {
     console.log(res);
 }).catch((err) => {
