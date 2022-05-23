@@ -36,13 +36,13 @@ git clone https://github.com/Chillandchat/api/
 ### Build and run:
 Yarn:
 
-```
+```sh
 yarn && yarn build && yarn start # Installs packages, builds and starts the app with yarn
 ```
 
 Npm:
 
-```
+```sh
 npm install && npm build && npm start # Installs packages, builds and starts the app with npm
 ```
 ### Docs
