@@ -5,7 +5,7 @@ import { RoomSchemaType } from "../utils";
 import debug from "../utils/debug";
 
 /**
- * This get all rooms endpoint will return all rooms that the inputed user has once called.
+ * This get all rooms endpoint will return all rooms that the inputted user has once called.
  *
  * @type {GET} This is a get typed endpoint.`
  * @param {string} user The id of the user you want to search.

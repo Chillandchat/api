@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { randomColor } from "randomcolor";
+import randomColor from "randomcolor";
 import bcrypt from "bcrypt";
 
 import roomSchema from "../schema/roomSchema";
 import debug from "../utils/debug";
 
 /**
- * This is the create room endpoint, this endpoint wil create a room once called.
+ * This is the create room endpoint, this endpoint will create a room once called.
  *
  * @param {string} id The id of the room the new room
  * @param {string} name The name of the room.
