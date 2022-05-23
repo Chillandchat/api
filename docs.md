@@ -4,12 +4,13 @@
 Welcome to the Chill&chat API documentation, This documentation will have the information about the API endpoints and how to call each of the endpoints using Javascript. You may use the index below to navigate the documentation.
 
 ### Contents 
-- [Using the documentation](https://github.com/Chillandchat/api/master/docs.md#using-the-documentation)
-- [Login endpoint](https://github.com/Chillandchat/api/master/docs.md#login-endpoint)
-- [Block user endpoint](https://github.com/Chillandchat/api/master/docs.md#block-user-endpoint)
-- [Create room endpoint](https://github.com/Chillandchat/api/master/docs.md#create-rooom-endpoint)
-- [Get all roms endpoint](https://github.com/Chillandchat/api/master/docs.md#get-all-room-endpoint)
-- [Get messages endpoint](https://github.com/Chillandchat/api/master/docs.md#get-message-endpoint)
+- [Using the documentation](https://github.com/Chillandchat/api/blob/master/docs.md#using-the-documentation)
+- [Login endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#login-endpoint)
+- [Block user endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#block-user-endpoint)
+- [Create room endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#create-rooom-endpoint)
+- [Get all roms endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-all-room-endpoint)
+- [Get messages endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-message-endpoint)
+- [Get user info endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-user-info-endpoint)
 
 ### Using the documentation 
 This documentation can used to get all the api information to be used in your programs. Every endpoint will have an example code snippet, you are welcome to copy and paste in into your program. Furthermore, the example snippets are written in Javascript and will be using the fetch/post functions to send requests to the server.
@@ -92,3 +93,19 @@ fetch("http://<URL>/api/get-messaegs?key=<YOUR_API_KEY>&room=<ROOM>")
 });
 
 ```
+# Get user info endpoint
+This is the the get user endpoint, as the name suggests the endpoint will get the uesr info of a specified user, the source of this endpoint can be found at: ```/src/endpoints/getUserInfo.ts```. This endpoint will return '200' on success, '401' on incorrect api key or '500' on internal sevrer error. Furthermore, this endpoint will expect a 'username' argument which is the username of the user to search. 
+
+### Example 
+```js
+
+fetch("http://<URL>/api/get-messaegs?key=<YOUR_API_KEY>&ruser=<USER>")
+.then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error(err);
+});
+
+```
+#
+[Back to top](https://github.com/Chillandchat/api/blob/master/docs.md#chillchat-api-documentation)
