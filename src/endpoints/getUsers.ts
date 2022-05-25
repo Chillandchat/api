@@ -7,6 +7,7 @@ import user from "../schema/authSchema";
 /**
  * This is the get users endpoint, this endpoint will return all users once called.
  *
+ * @deprecated
  * @type {GET} This is a get endpoint.
  * @returns {Array<AuthSchemaType>} Returns a array of users, see './type.d.ts' for details.
  */
