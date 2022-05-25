@@ -122,5 +122,9 @@ fetch("http://<URL>/api/get-users?key=<YOUR_API_KEY>")
 });
 
 ```
+## Home endpoint
+This is the home home endpoint where it just sends a static .html file to the user. The source of the endpoint can be found at: ```/src/endpoints/home.ts```, I have no idea why anyone would look at that.
+## Join room endpoint
+
 #
 [Back to top](https://github.com/Chillandchat/api/blob/master/docs.md#chillchat-api-documentation)
