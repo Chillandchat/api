@@ -123,8 +123,24 @@ fetch("http://<URL>/api/get-users?key=<YOUR_API_KEY>")
 
 ```
 ## Home endpoint
-This is the home home endpoint where it just sends a static .html file to the user. The source of the endpoint can be found at: ```/src/endpoints/home.ts```, I have no idea why anyone would look at that.
-## Join room endpoint
+This is the home endpoint where it just sends a static .html file to the user. The source of the endpoint can be found at: ```/src/endpoints/home.ts```, I have no idea why anyone would look at that.
 
+## Join room endpoint
+This is the join room endpoint, this endpoint will create a room in the database once called. The source of the the endpoint can be found at: ```/src/endpoints/joinRoom.ts```. Furthermore, the endpoint will execept a 'id' argument which is the id of room to join, a 'user' argument which is the user to add to the room and finally a 'passcode' argument which as the name suggests it's the passcode for the room. Also, the endpoint will return a status of '200' on sucess, '400' on error, '401' on a invalid API key and '500' on server error. 
+
+### Example
+```js
+
+post("http://<URL>/api/join-room?key=<YOUR_API_KEY>", {
+    id: "<ROOM_ID>",
+    user: "<USER>",
+    passcode: "<PASSCODE>" // Must be raw unencrypted passcode!!
+}).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error(err);
+});
+
+```
 #
 [Back to top](https://github.com/Chillandchat/api/blob/master/docs.md#chillchat-api-documentation)
