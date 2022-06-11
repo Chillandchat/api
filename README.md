@@ -74,4 +74,3 @@ All the above will be enforced to ensure Chill&chat is safe!
 
 #
 ❤️ Made with love ❤️
-#
