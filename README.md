@@ -72,3 +72,6 @@ All the above will be enforced to ensure Chill&chat is safe!
 
 *Muhammad A*
 
+#
+❤️ Made with love ❤️
+#
