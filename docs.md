@@ -12,6 +12,7 @@ Welcome to the Chill&chat API documentation, This documentation will have the in
 - [Get messages endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-message-endpoint)
 - [Get user info endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-user-info-endpoint)
 - [Get users info endpoint(Deprecated)](https://github.com/Chillandchat/api/blob/master/docs.md#get-users-endpointdeprecated)
+- [Join room endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#join-room-endpoint)
 
 ### Using the documentation 
 This documentation can used to get all the api information to be used in your programs. Every endpoint will have an example code snippet, you are welcome to copy and paste in into your program. Furthermore, the example snippets are written in Javascript and will be using the fetch/post functions to send requests to the server.
@@ -142,5 +143,6 @@ post("http://<URL>/api/join-room?key=<YOUR_API_KEY>", {
 });
 
 ```
+##
 #
 [Back to top](https://github.com/Chillandchat/api/blob/master/docs.md#chillchat-api-documentation)
