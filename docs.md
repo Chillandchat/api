@@ -7,12 +7,13 @@ Welcome to the Chill&chat API documentation, This documentation will have the in
 - [Using the documentation](https://github.com/Chillandchat/api/blob/master/docs.md#using-the-documentation)
 - [Login endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#login-endpoint)
 - [Block user endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#block-user-endpoint)
-- [Create room endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#create-rooom-endpoint)
+- [Create room endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#create-room-endpoint)
 - [Get all roms endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-all-room-endpoint)
 - [Get messages endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-message-endpoint)
 - [Get user info endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#get-user-info-endpoint)
 - [Get users info endpoint(Deprecated)](https://github.com/Chillandchat/api/blob/master/docs.md#get-users-endpointdeprecated)
 - [Join room endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#join-room-endpoint)
+- [Signup endpoint](https://github.com/Chillandchat/api/blob/master/docs.md#signup-endpoint)
 
 ### Using the documentation 
 This documentation can used to get all the api information to be used in your programs. Every endpoint will have an example code snippet, you are welcome to copy and paste in into your program. Furthermore, the example snippets are written in Javascript and will be using the fetch/post functions to send requests to the server.
@@ -136,6 +137,26 @@ post("http://<URL>/api/join-room?key=<YOUR_API_KEY>", {
     id: "<ROOM_ID>",
     user: "<USER>",
     passcode: "<PASSCODE>" // Must be raw unencrypted passcode!!
+}).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error(err);
+});
+
+```
+## Signup endpoint 
+This is the sign up endpoint, as the name suggests the endpoint will create a user instance in the database. This endpoint will execpt a 'id' argument for the user id, usually created with the [uuid package](https://www.npmjs.com/package/uuid). A 'username' for the username, a 'password' for the user's password to be hashed and stored, a 'verified' argument for the verified status, a  'bot' argument for the bot status and a 'blocked' argument to determin if the user is blocked. Furthermore, the endpoint will return a status of '401' on invalid api key, '201' on success or '500' on server error. finally,  the source for this endpoint is stored in ```/src/endpoints/signup.ts```.
+
+### Example
+```js
+
+post("http://<URL>/api/signup?key=<YOUR_API_KEY>", {
+    id: "<ID>",
+    verified: false, 
+    blocked: false,
+    bot: false,
+    username: "<USERNAME>",
+    password: "<PASSWORD>" // Must be raw unencrypted passcode!!
 }).then((res) => {
     console.log(res);
 }).catch((err) => {
