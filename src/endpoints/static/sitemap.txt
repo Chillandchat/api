@@ -1,19 +1,19 @@
-Paths:
+Endpoints:
 
 UTILITIES:
 / - Home screen(GET)
 /site-map - Sitemap(GET)
 ---------------------------------------------------
 SUPPORTED:
-/api/login - Login(POST)
-/api/signup - Signup(POST)
-/api/get-messages - Get all messages(GET)
-/api/get-users - Get all users(GET)
-/api/get-user-info - Get user information(GET)
-/api/get-rooms - Get all rooms of the user(GET)
-/api/create-room - Create a room(POST)
-/api/block-user - Block user(POST)
-/api/join-room - Join a room(POST)
+/api/login - Login(POST) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#login-endpoint
+/api/signup - Signup(POST) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#signup-endpoint
+/api/get-messages - Get all messages(GET) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#get-message-endpoint
+/api/get-user-info - Get user information(GET) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#get-user-info-endpoint
+/api/get-rooms - Get all rooms of the user(GET) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#get-all-room-endpoint
+/api/create-room - Create a room(POST) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#block-user-endpoint
+/api/block-user - Block user(POST) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#block-user-endpoint
+/api/join-room - Join a room(POST) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#join-room-endpoint
+/api/report-room - Report room(POST) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#report-room-endpoint
 ----------------------------------------------------
 DEPRECATED / NOT SUPPORTED:
-/api/report-user - Report user(POST)
+/api/get-users - Get all users(GET) - Documentation: https://github.com/Chillandchat/api/blob/master/docs.md#get-users-endpointdeprecated
