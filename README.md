@@ -68,9 +68,6 @@ All the above will be enforced to ensure Chill&chat is safe!
 
 *Brianna cheng - UI&UX designer* 
 
-### Special thanks:
-
-*Muhammad A*
-
+*Manav Rangarajan - Designer*
 #
-❤️ Made with love ❤️
+❤️ Made With Love ❤️
