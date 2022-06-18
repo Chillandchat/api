@@ -148,15 +148,15 @@ post("http://<URL>/api/join-room?key=<YOUR_API_KEY>", {
 This is the sign up endpoint, as the name suggests the endpoint will create a user instance in the database. This endpoint will execpt a 'id' argument for the user id, usually created with the [uuid package](https://www.npmjs.com/package/uuid). A 'username' for the username, a 'password' for the user's password to be hashed and stored, a 'verified' argument for the verified status, a  'bot' argument for the bot status and a 'blocked' argument to determin if the user is blocked. Furthermore, the endpoint will return a status of '401' on invalid api key, '201' on success or '500' on server error. finally,  the source for this endpoint is stored in ```/src/endpoints/signup.ts```.
 
 ### Example
+ccccccc
+## Report room endpoint 
+This is the report room endpoint, this endpoint will report by emailing me the passed room when called. The endpoint will only take a 'room' argument which specifies the room to report. Furthermore, This endpoint will return a status of '401' on invalid key, '500' on server error and '200' on success. Also, the source is stored at ```/src/endpoints/reportRoom.ts```, I highly doubt that this endpoint will work for me because of the security updates by google, more info [here](https://myaccount.google.com/lesssecureapps).
+
+### Example
 ```js
 
-post("http://<URL>/api/signup?key=<YOUR_API_KEY>", {
-    id: "<ID>",
-    verified: false, 
-    blocked: false,
-    bot: false,
-    username: "<USERNAME>",
-    password: "<PASSWORD>" // Must be raw unencrypted passcode!!
+post("http://<URL>/api/report-room?key=<YOUR_API_KEY>", {
+    room: "<ROOM_ID>"
 }).then((res) => {
     console.log(res);
 }).catch((err) => {
@@ -164,6 +164,5 @@ post("http://<URL>/api/signup?key=<YOUR_API_KEY>", {
 });
 
 ```
-##
 #
 [Back to top](https://github.com/Chillandchat/api/blob/master/docs.md#chillchat-api-documentation)
