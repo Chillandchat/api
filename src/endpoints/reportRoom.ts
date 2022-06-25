@@ -34,7 +34,7 @@ const reportRoom = async (
 
   const mailOptions: any = {
     from: process.env.API_EMAIL,
-    to: "alvincheng88@icloud.com",
+    to: process.env.API_EMAIL_DEST,
     subject: "You have a new report from the Chill&chat server",
     text: `${req.body.room} has just got reported and please check mongoDB logs now.`,
     secureConnection: true,
