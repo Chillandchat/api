@@ -22,10 +22,7 @@ const reportRoom = async (
   }
 
   const transporter: any = nodemailer.createTransport({
-    service: "gmail",
-    port: 465,
-    secure: true,
-    host: "smtp.gmail.com",
+    service:"icloud",
     auth: {
       user: process.env.API_EMAIL,
       pass: process.env.API_EMAIL_PASS,
@@ -34,7 +31,7 @@ const reportRoom = async (
 
   const mailOptions: any = {
     from: process.env.API_EMAIL,
-    to: process.env.API_EMAIL_DEST,
+    to: process.env.API_EMAIL,
     subject: "You have a new report from the Chill&chat server",
     text: `${req.body.room} has just got reported and please check mongoDB logs now.`,
     secureConnection: true,
