@@ -7,9 +7,6 @@ import roomSchema from "../schema/roomSchema";
 /**
  * This is the remove room endpoint, this endpoint will remove a user from the room's users array
  *
- * !!! This endpoint is not ready for production !!!
- * @experimental
- *
  * @type {POST} This is a post endpoint.
  * @param {string} id The room id.
  * @param {string} user The user to be removed from the room.
@@ -33,7 +30,7 @@ const removeRoom = async (req: Request, res: Response, _next: NextFunction) => {
               { $pull: { users: req.body.user } }
             )
             .exec()
-            .then(() => {
+            .then((): void => {
               res.status(200).send("User removed from room.");
               debug.log(`${req.body.user} removed from room ${req.body.id}`);
             });
