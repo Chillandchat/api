@@ -1,7 +1,7 @@
-import { RoomSchemaType } from "./../utils/index.d";
 import { NextFunction, Request, Response } from "express";
-import debug from "../utils/debug";
 
+import { RoomSchemaType } from "./../utils/index.d";
+import debug from "../utils/debug";
 import roomSchema from "../schema/roomSchema";
 
 /**
