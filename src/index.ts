@@ -50,6 +50,7 @@ import searchMessage from "./endpoints/SearchMessage";
 import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
+import removeRoom from "./endpoints/removeRoom";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -85,6 +86,7 @@ app.post("/api/create-room", createRoom);
 app.post("/api/join-room", joinRoom);
 app.get("/site-map", siteMap);
 app.post("/api/report-room", reportRoom);
+app.post("/api/remove-room", removeRoom);
 
 // Socket server:
 io.on("connection", (socket: Socket): void => {

@@ -1,3 +1,4 @@
+import { RoomSchemaType } from "./../utils/index.d";
 import { NextFunction, Request, Response } from "express";
 import debug from "../utils/debug";
 
@@ -16,8 +17,6 @@ import roomSchema from "../schema/roomSchema";
  */
 
 const removeRoom = async (req: Request, res: Response, _next: NextFunction) => {
-  return;
-  
   if (req.query.key !== String(process.env.KEY)) {
     res.status(401).send("Invalid api key.");
     return;
@@ -25,14 +24,22 @@ const removeRoom = async (req: Request, res: Response, _next: NextFunction) => {
 
   try {
     await roomSchema
-      .findOneAndUpdate(
-        { id: req.body.id },
-        { $pull: { users: req.body.user } }
-      )
-      .exec()
-      .then(() => {
-        res.status(200).send("User removed from room.");
-        debug.log(`${req.body.user} removed from room ${req.body.id}`);
+      .findOne({ id: req.body.id })
+      .then(async (room: RoomSchemaType): Promise<void> => {
+        if (room.users.indexOf(req.body.user) !== -1) {
+          await roomSchema
+            .findOneAndUpdate(
+              { id: req.body.id },
+              { $pull: { users: req.body.user } }
+            )
+            .exec()
+            .then(() => {
+              res.status(200).send("User removed from room.");
+              debug.log(`${req.body.user} removed from room ${req.body.id}`);
+            });
+        } else {
+          res.status(400).send("User not present in the room.");
+        }
       });
   } catch (err: unknown) {
     res.status(500).send(err);
