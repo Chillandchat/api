@@ -33,6 +33,18 @@ The Chill&chat API is made with NodeJS please follow the steps to clone/run.
 git clone https://github.com/Chillandchat/api/
 ```
 
+### Eviroment file setup:
+
+```sh
+
+KEY= # Replace with custom API key.
+DATABASE_URI= # Replace with MongoDB database URI.
+PORT= # Replace with port number.
+API_EMAIL= # Replace with email
+API_EMAIL_PASS= # Replace with email password
+
+```
+
 ### Build and run:
 Yarn:
 
