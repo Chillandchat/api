@@ -4,7 +4,7 @@ const upTime = (): void => {
   setTimeout(() => {
     debug.log("Heroku up time reset.");
     upTime();
-  }, 10);
+  }, 60000 * 30);
 };
 
 export default upTime;
