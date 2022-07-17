@@ -51,10 +51,13 @@ import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
 import removeRoom from "./endpoints/removeRoom";
+import upTime from "./utils/uptime";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
 const io = new Server(httpServer);
+
+upTime();
 
 const PORT: number = Number(process.env.PORT) || 3000;
 
