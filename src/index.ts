@@ -99,20 +99,21 @@ io.on("connection", (socket: Socket): void => {
     ): Promise<void> => {
       if (key === process.env.KEY) {
         io.emit(`client-message:room(${payload.room})`, payload);
-        try {
-          const newMessage = new message({
-            id: payload.id,
-            user: payload.user,
-            content: payload.content,
-            room: payload.room,
-          });
-          await newMessage.save().then((): void => {
+        const newMessage = new message({
+          id: payload.id,
+          user: payload.user,
+          content: payload.content,
+          room: payload.room,
+        });
+        await newMessage
+          .save()
+          .then((): void => {
             io.emit(`sent:token(${responseToken})`);
             debug.log(`Message: ${payload.id} saved and emitted.`);
+          })
+          .catch((err: unknown): void => {
+            io.emit(`error:token(${responseToken})`, err);
           });
-        } catch (err: unknown) {
-          io.emit(`error:token(${responseToken})`, err);
-        }
       } else {
         io.emit(`error:token(${responseToken})`, "Invalid key");
       }
@@ -137,6 +138,23 @@ io.on("connection", (socket: Socket): void => {
           io.emit(`stopped-typing:token(${responseToken})`);
         }
         io.emit(`keyboard-${mode}:room(${room})`, user);
+      } else io.emit(`error:token(${responseToken})`, "Invalid key");
+    }
+  );
+
+  socket.on(
+    "server-message-delete",
+    async (id: string, responseToken: string, key: string): Promise<void> => {
+      if (key === process.env.KEY) {
+        await message
+          .findOneAndDelete({ id: { $eq: id } })
+          .then((): void => {
+            io.emit("client-message-delete", id);
+            debug.log(`Deleted message ${id}`);
+          })
+          .catch((err: unknown): void => {
+            io.emit(`error:token(${responseToken})`, err);
+          });
       } else io.emit(`error:token(${responseToken})`, "Invalid key");
     }
   );
