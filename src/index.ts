@@ -144,12 +144,13 @@ io.on("connection", (socket: Socket): void => {
 
   socket.on(
     "server-message-delete",
-    async (id: string, responseToken: string, key: string): Promise<void> => {
+    async (id: string,room:string, responseToken: string, key: string): Promise<void> => {
       if (key === process.env.KEY) {
         await message
           .findOneAndDelete({ id: { $eq: id } })
           .then((): void => {
-            io.emit("client-message-delete", id);
+            io.emit(`client-message-delete:room(${room})`, id);
+            io.emit(`deleted:token(${responseToken})`);
             debug.log(`Deleted message ${id}`);
           })
           .catch((err: unknown): void => {
