@@ -30,9 +30,29 @@ const removeRoom = async (req: Request, res: Response, _next: NextFunction) => {
               { $pull: { users: req.body.user } }
             )
             .exec()
-            .then((): void => {
-              res.status(200).send("User removed from room.");
-              debug.log(`${req.body.user} removed from room ${req.body.id}`);
+            .then(async (): Promise<void> => {
+              await roomSchema
+                .findOne({ id: req.body.id })
+                .then(async (room: RoomSchemaType): Promise<void> => {
+                  if (room.users.length > 0) {
+                    res.status(200).send("User removed from room.");
+                    debug.log(
+                      `${req.body.user} removed from room ${req.body.id}`
+                    );
+                  } else {
+                    await roomSchema
+                      .findOneAndDelete({ id: req.body.id })
+                      .exec()
+                      .then((): void => {
+                        res
+                          .status(200)
+                          .send("User removed from room and room deleted");
+                        debug.log(
+                          `${req.body.user} removed from room ${req.body.id} and deleted room.`
+                        );
+                      });
+                  }
+                });
             });
         } else {
           res.status(400).send("User not present in the room.");
