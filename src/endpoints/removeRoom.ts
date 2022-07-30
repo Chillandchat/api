@@ -4,7 +4,6 @@ import { MessageSchemaType, RoomSchemaType } from "./../utils/index.d";
 import debug from "../utils/debug";
 import roomSchema from "../schema/roomSchema";
 import messageSchema from "../schema/messageSchema";
-import message from "../schema/messageSchema";
 
 /**
  * This is the remove room endpoint, this endpoint will remove a user from the room's users array
