@@ -32,7 +32,7 @@ const getAllRooms = async (
         debug.log(`User ${req.query.user} has found ${data.length} rooms.`);
       });
   } catch (err: unknown) {
-    res.status(500).send(`${err}`);
+    res.status(500).send(err);
 
     debug.error(err);
   }

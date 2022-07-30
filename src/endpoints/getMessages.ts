@@ -32,7 +32,7 @@ const getMessages = async (
         debug.log("Found messages.");
       });
   } catch (err: unknown) {
-    res.status(500).send(`${err}`);
+    res.status(500).send(err);
 
     debug.error(err);
   }

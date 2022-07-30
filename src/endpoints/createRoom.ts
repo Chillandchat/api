@@ -43,7 +43,7 @@ const createRoom = async (
         debug.log(`Room ${req.body.id} created.`);
       });
   } catch (err: unknown) {
-    res.status(500).send(`${err}`);
+    res.status(500).send(err);
 
     debug.error(err);
   }

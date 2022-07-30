@@ -40,7 +40,7 @@ const signup = async (
         debug.log("New user created.");
       });
   } catch (err: unknown) {
-    res.status(500).send(`${err}`);
+    res.status(500).send(err);
 
     debug.error(err);
   }

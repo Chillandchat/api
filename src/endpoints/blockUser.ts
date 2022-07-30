@@ -38,7 +38,7 @@ const blockUser = async (
         } else res.status(400).send("User not found.");
       });
   } catch (err: unknown) {
-    res.status(500).send(`${err}`);
+    res.status(500).send(err);
     debug.error(err);
   }
 };

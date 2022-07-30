@@ -22,18 +22,18 @@ const removeRoom = async (req: Request, res: Response, _next: NextFunction) => {
 
   try {
     await roomSchema
-      .findOne({ id: req.body.id })
+      .findOne({ id: { $eq: req.body.id } })
       .then(async (room: RoomSchemaType): Promise<void> => {
         if (room.users.indexOf(req.body.user) !== -1) {
           await roomSchema
             .findOneAndUpdate(
-              { id: req.body.id },
+              { id: { $eq: req.body.id } },
               { $pull: { users: req.body.user } }
             )
             .exec()
             .then(async (): Promise<void> => {
               await roomSchema
-                .findOne({ id: req.body.id })
+                .findOne({ id: { $eq: req.body.id } })
                 .then(async (room: RoomSchemaType): Promise<void> => {
                   if (room.users.length > 0) {
                     res.status(200).send("User removed from room.");
@@ -42,11 +42,11 @@ const removeRoom = async (req: Request, res: Response, _next: NextFunction) => {
                     );
                   } else {
                     await roomSchema
-                      .findOneAndDelete({ id: req.body.id })
+                      .findOneAndDelete({ id: { $eq: req.body.id } })
                       .exec()
                       .then(async (): Promise<void> => {
                         await messageSchema
-                          .find({ room: req.body.id })
+                          .find({ room: { $eq: req.body.id } })
                           .then((messages: Array<MessageSchemaType>): void => {
                             messages.forEach(
                               async (
