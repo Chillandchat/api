@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
-import { RoomSchemaType } from "./../utils/index.d";
+import { MessageSchemaType, RoomSchemaType } from "./../utils/index.d";
 import debug from "../utils/debug";
 import roomSchema from "../schema/roomSchema";
+import messageSchema from "../schema/messageSchema";
+import message from "../schema/messageSchema";
 
 /**
  * This is the remove room endpoint, this endpoint will remove a user from the room's users array
@@ -43,13 +45,26 @@ const removeRoom = async (req: Request, res: Response, _next: NextFunction) => {
                     await roomSchema
                       .findOneAndDelete({ id: req.body.id })
                       .exec()
-                      .then((): void => {
-                        res
-                          .status(200)
-                          .send("User removed from room and room deleted");
-                        debug.log(
-                          `${req.body.user} removed from room ${req.body.id} and deleted room.`
-                        );
+                      .then(async (): Promise<void> => {
+                        await messageSchema
+                          .find({ room: req.body.id })
+                          .then((messages: Array<MessageSchemaType>): void => {
+                            messages.forEach(
+                              async (
+                                message: MessageSchemaType
+                              ): Promise<void> => {
+                                await messageSchema
+                                  .findOneAndDelete({ id: message.id })
+                                  .exec();
+                              }
+                            );
+                            res
+                              .status(200)
+                              .send("User removed from room and room deleted");
+                            debug.log(
+                              `${req.body.user} removed from room ${req.body.id} and deleted room.`
+                            );
+                          });
                       });
                   }
                 });
