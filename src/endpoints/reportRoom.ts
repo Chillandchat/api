@@ -22,7 +22,7 @@ const reportRoom = async (
   }
 
   const transporter: any = nodemailer.createTransport({
-    service:"outlook",
+    service: "outlook",
     auth: {
       user: process.env.API_EMAIL,
       pass: process.env.API_EMAIL_PASS,
@@ -32,8 +32,8 @@ const reportRoom = async (
   const mailOptions: any = {
     from: process.env.API_EMAIL,
     to: process.env.API_EMAIL,
-    subject: "You have a new report from the Chill&chat server",
-    text: `${req.body.room} has just got reported and please check mongoDB logs now.`,
+    subject: "Chill&chat server report ticket",
+    html: `<p>Room: '${req.body.room}' has been <strong>reported</strong>. Please check the mongoDB database by click <a href="https://cloud.mongodb.com/v2/616bf442b46d030b8167cc0d#clusters">here</a>. Or check the heroku API logs by clicking <a href="https://dashboard.heroku.com/apps/chillandchat-api/logs">here</a>.</p>`,
     secureConnection: true,
   };
 
