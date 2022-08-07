@@ -31,7 +31,7 @@ const updateDescription = async (
       .exec()
       .then((): void => {
         debug.log(`${req.body.username}'s description has been updated.`);
-        res.status(201).send("Description updated successfully.");
+        res.status(200).send("Description updated successfully.");
       });
   } catch (err: unknown) {
     res.status(500).send(err);
