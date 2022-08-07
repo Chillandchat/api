@@ -25,14 +25,14 @@ const followUser = async (
   try {
     await userSchema
       .findOneAndUpdate(
-        { username: req.body.targetUser },
+        { username: { $eq: req.body.targetUser } },
         { $inc: { followers: 1 } }
       )
       .exec()
       .then(async (): Promise<void> => {
         await userSchema
           .findOneAndUpdate(
-            { username: req.body.user },
+            { username: { $eq: req.body.user } },
             { $push: { following: req.body.targetUser } }
           )
           .exec()
