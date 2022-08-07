@@ -32,6 +32,9 @@ const signup = async (
       bot: req.body.bot,
       blocked: req.body.blocked,
       iconColor: randomColor(),
+      description: req.body.description,
+      followers: req.body.followers,
+      following: req.body.following,
     })
       .save()
       .then((): void => {

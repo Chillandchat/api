@@ -8,6 +8,9 @@ import mongoose from "mongoose";
  * @param {string} content The content of the message.
  * @param {boolean} verified Whether the sender of the message is verified.
  * @param {string} iconColor The color of the icon.
+ * @param {string} description The description of the user.
+ * @param {number} followers The number of followers of the user.
+ * @param {string} following The users that the user is following.
  */
 
 export interface AuthSchemaType extends mongoose.Document {
@@ -18,6 +21,9 @@ export interface AuthSchemaType extends mongoose.Document {
   bot: boolean;
   blocked: boolean;
   iconColor: string;
+  followers: number;
+  description: string;
+  following: Array<string>;
 }
 
 /**
