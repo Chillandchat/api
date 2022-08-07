@@ -51,6 +51,8 @@ import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
 import removeRoom from "./endpoints/removeRoom";
+import unfollowUser from "./endpoints/unfollowUser";
+import followUser from "./endpoints/followUser";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -87,6 +89,8 @@ app.post("/api/join-room", joinRoom);
 app.get("/site-map", siteMap);
 app.post("/api/report-room", reportRoom);
 app.post("/api/remove-room", removeRoom);
+app.post("api/unfollow-user", unfollowUser);
+app.post("/api/follow-user", followUser);
 
 // Socket server:
 io.on("connection", (socket: Socket): void => {
