@@ -53,6 +53,7 @@ import reportRoom from "./endpoints/reportRoom";
 import removeRoom from "./endpoints/removeRoom";
 import unfollowUser from "./endpoints/unfollowUser";
 import followUser from "./endpoints/followUser";
+import updateDescription from "./endpoints/updateDescription";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -91,6 +92,7 @@ app.post("/api/report-room", reportRoom);
 app.post("/api/remove-room", removeRoom);
 app.post("api/unfollow-user", unfollowUser);
 app.post("/api/follow-user", followUser);
+app.post("/api/update-description", updateDescription)
 
 // Socket server:
 io.on("connection", (socket: Socket): void => {
