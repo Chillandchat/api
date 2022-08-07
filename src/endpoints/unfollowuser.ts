@@ -32,7 +32,7 @@ const unfollowUser = async (
       .then(async (): Promise<void> => {
         await userSchema
           .findOneAndUpdate(
-            { username: {$eq:req.body.user }},
+            { username: { $eq: req.body.user } },
             { $pull: { following: req.body.targetUser } }
           )
           .exec()
