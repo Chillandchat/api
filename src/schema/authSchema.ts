@@ -17,7 +17,7 @@ const schema: any = new mongoose.Schema({
   iconColor: String,
   description: String,
   followers: Number,
-  following: Array<String>,
+  following: [String],
 });
 
 const user: mongoose.Model<any> = mongoose.model<AuthSchemaType>(
