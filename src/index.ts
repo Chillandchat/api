@@ -51,7 +51,7 @@ import debug from "./utils/debug";
 import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
 import removeRoom from "./endpoints/removeRoom";
-import unfollowUser from "./endpoints/unfollowUser";
+import unfollowUser from "./endpoints/unfollowuser";
 import followUser from "./endpoints/followUser";
 import updateDescription from "./endpoints/updateDescription";
 
