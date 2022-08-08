@@ -38,7 +38,7 @@ const followUser = async (
           .exec()
           .then((): void => {
             debug.log(`${req.body.targetUser} has been followed.`);
-            res.status(201).send("Followed successfully.");
+            res.status(200).send("Followed successfully.");
           });
       });
   } catch (err: unknown) {
