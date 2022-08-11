@@ -1,3 +1,4 @@
+import { AuthSchemaType } from "./../utils/index.d";
 import { NextFunction, Request, Response } from "express";
 
 import userSchema from "../schema/authSchema";
@@ -24,22 +25,29 @@ const unfollowUser = async (
 
   try {
     await userSchema
-      .findOneAndUpdate(
-        { username: { $eq: req.body.targetUser } },
-        { $inc: { followers: -1 } }
-      )
+      .findOne({ username: { $eq: req.body.username } })
       .exec()
-      .then(async (): Promise<void> => {
-        await userSchema
-          .findOneAndUpdate(
-            { username: { $eq: req.body.user } },
-            { $pull: { following: req.body.targetUser } }
-          )
-          .exec()
-          .then((): void => {
-            debug.log(`${req.body.targetUser} has been unfollowed.`);
-            res.status(201).send("Unfollowed successfully.");
-          });
+      .then(async (user: AuthSchemaType): Promise<void> => {
+        user.followers - 1 > 0
+          ? await userSchema
+              .findOneAndUpdate(
+                { username: { $eq: req.body.targetUser } },
+                { $inc: { followers: -1 } }
+              )
+              .exec()
+              .then(async (): Promise<void> => {
+                await userSchema
+                  .findOneAndUpdate(
+                    { username: { $eq: req.body.user } },
+                    { $pull: { following: req.body.targetUser } }
+                  )
+                  .exec()
+                  .then((): void => {
+                    debug.log(`${req.body.targetUser} has been unfollowed.`);
+                    res.status(201).send("Unfollowed successfully.");
+                  });
+              })
+          : null;
       });
   } catch (err: unknown) {
     res.status(500).send(err);
