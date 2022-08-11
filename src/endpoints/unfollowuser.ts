@@ -28,7 +28,7 @@ const unfollowUser = async (
       .findOne({ username: { $eq: req.body.targetUser } })
       .exec()
       .then(async (user: AuthSchemaType): Promise<void> => {
-        if (user.followers - 1 > 0) {
+        if (user.followers - 1 >= 0) {
           await userSchema
             .findOneAndUpdate(
               { username: { $eq: req.body.targetUser } },
