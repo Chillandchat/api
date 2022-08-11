@@ -26,7 +26,7 @@ const unfollowUser = async (
     await userSchema
       .findOneAndUpdate(
         { username: { $eq: req.body.targetUser } },
-        { $subtract: { followers: 1 } }
+        { followers: { $subtract: ["followers", 1] } }
       )
       .exec()
       .then(async (): Promise<void> => {
