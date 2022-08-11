@@ -90,9 +90,9 @@ app.post("/api/join-room", joinRoom);
 app.get("/site-map", siteMap);
 app.post("/api/report-room", reportRoom);
 app.post("/api/remove-room", removeRoom);
-app.post("api/unfollow-user", unfollowUser);
+app.post("/api/unfollow-user", unfollowUser);
 app.post("/api/follow-user", followUser);
-app.post("/api/update-description", updateDescription)
+app.post("/api/update-description", updateDescription);
 
 // Socket server:
 io.on("connection", (socket: Socket): void => {
