@@ -28,6 +28,13 @@ const unfollowUser = async (
       .findOne({ username: { $eq: req.body.targetUser } })
       .exec()
       .then(async (user: AuthSchemaType): Promise<void> => {
+        if (user === null) {
+          debug.error("User does not exist.");
+          res.status(400).send("User does not exist.");
+
+          return;
+        }
+
         if (user.followers - 1 >= 0) {
           await userSchema
             .findOneAndUpdate(
@@ -48,10 +55,8 @@ const unfollowUser = async (
                 });
             });
         } else {
-          debug.error("User has already unfollowed");
-          res.status(400).send("User has already unfollowed");
-
-          return;
+          debug.error("User cannot have a negative follower count.");
+          res.status(400).send("User cannot have negative follower count.");
         }
       });
   } catch (err: unknown) {

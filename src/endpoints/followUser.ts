@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import userSchema from "../schema/authSchema";
+import { AuthSchemaType } from "../utils";
 import debug from "../utils/debug";
 
 /**
@@ -24,21 +25,43 @@ const followUser = async (
 
   try {
     await userSchema
-      .findOneAndUpdate(
-        { username: { $eq: req.body.targetUser } },
-        { $inc: { followers: 1 } }
-      )
+      .findOne({ username: { $eq: req.body.targetUser } })
       .exec()
-      .then(async (): Promise<void> => {
+      .then(async (user: AuthSchemaType): Promise<void> => {
+        if (user === null) {
+          debug.error("User does not exist.");
+          res.status(400).send("User does not exist.");
+
+          return;
+        }
+
         await userSchema
-          .findOneAndUpdate(
-            { username: { $eq: req.body.user } },
-            { $push: { following: req.body.targetUser } }
-          )
+          .findOne({ username: { $eq: req.body.user } })
           .exec()
-          .then((): void => {
-            debug.log(`${req.body.targetUser} has been followed.`);
-            res.status(200).send("Followed successfully.");
+          .then(async (user: AuthSchemaType): Promise<void> => {
+            if (user.following.includes(req.body.targetUser)) {
+              await userSchema
+                .findOneAndUpdate(
+                  { username: { $eq: req.body.targetUser } },
+                  { $inc: { followers: 1 } }
+                )
+                .exec()
+                .then(async (): Promise<void> => {
+                  await userSchema
+                    .findOneAndUpdate(
+                      { username: { $eq: req.body.user } },
+                      { $push: { following: req.body.targetUser } }
+                    )
+                    .exec()
+                    .then((): void => {
+                      debug.log(`${req.body.targetUser} has been followed.`);
+                      res.status(200).send("Followed successfully.");
+                    });
+                });
+            } else {
+              debug.error("User is already following this user.");
+              res.status(400).send("User is already following this user.");
+            }
           });
       });
   } catch (err: unknown) {
