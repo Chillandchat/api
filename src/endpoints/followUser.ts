@@ -39,7 +39,7 @@ const followUser = async (
           .findOne({ username: { $eq: req.body.user } })
           .exec()
           .then(async (user: AuthSchemaType): Promise<void> => {
-            if (user.following.includes(req.body.targetUser)) {
+            if (!user.following.includes(req.body.targetUser)) {
               await userSchema
                 .findOneAndUpdate(
                   { username: { $eq: req.body.targetUser } },
