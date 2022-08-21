@@ -10,7 +10,7 @@ import user from "../schema/authSchema";
  * @type {POST} This is a post endpoint
  * @param {string} user The user to block.
  * @param {boolean} blockStatus Whether the user should be blocked.
- * @returns {string} Retuns the result in string format.
+ * @returns {string} Returns the result in string format.
  */
 
 const blockUser = async (
