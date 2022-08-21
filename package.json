@@ -1,5 +1,5 @@
 {
-  "name": "chillandchat-api",
+  "name": "@chillandchat/api",
   "version": "1.0.0",
   "main": "./build/js/index.js",
   "author": "Alvin cheng",
