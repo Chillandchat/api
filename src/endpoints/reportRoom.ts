@@ -8,6 +8,8 @@ import debug from "../utils/debug";
  *
  * @type {POST} This is a post typed endpoint.
  * @param {string} room The room that will be reported.
+ * @param {string} user The name of the user reporting.
+ * @optional @param {string} message The message that the user can leave.
  * @returns {string} Returns the result in a string format.
  */
 
@@ -33,7 +35,13 @@ const reportRoom = async (
     from: process.env.API_EMAIL,
     to: process.env.API_EMAIL,
     subject: "Chill&chat server report ticket",
-    html: `<p>Room: '${req.body.room}' has been <strong>reported</strong>. Please check the mongoDB database by click <a href="https://cloud.mongodb.com/v2/616bf442b46d030b8167cc0d#clusters">here</a>. Or check the heroku API logs by clicking <a href="https://dashboard.heroku.com/apps/chillandchat-api/logs">here</a>.</p>`,
+    html: `<p>${req.body.user} reported room: '${
+      req.body.room
+    }'. Please check the mongoDB database logs by click <a href="https://cloud.mongodb.com/v2/616bf442b46d030b8167cc0d#clusters">here</a>.</p> <br> <h1>Message</h1><p>${
+      req.body.message === null || undefined
+        ? "The user did not leave a message."
+        : req.body.message
+    }</p>`,
     secureConnection: true,
   };
 
