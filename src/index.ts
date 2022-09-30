@@ -81,7 +81,7 @@ app.get("/", home);
 app.post("/api/signup", signup);
 app.post("/api/login", login);
 app.get("/api/get-messages", getMessages);
-app.get("/api/get-users", getUsers);
+app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
 app.post("/api/search-message", searchMessage);
