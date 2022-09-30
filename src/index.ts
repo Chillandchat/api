@@ -55,6 +55,7 @@ import unfollowUser from "./endpoints/unfollowuser";
 import followUser from "./endpoints/followUser";
 import updateDescription from "./endpoints/updateDescription";
 import updateIconColor from "./endpoints/updateIconColor";
+import getKey from "./endpoints/getKey";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -81,14 +82,15 @@ app.get("/", home);
 app.post("/api/signup", signup);
 app.post("/api/login", login);
 app.get("/api/get-messages", getMessages);
+app.get("/site-map", siteMap);
 app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
+app.get("/api/get-key", getKey);
 app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
 app.post("/api/create-room", createRoom);
 app.post("/api/join-room", joinRoom);
-app.get("/site-map", siteMap);
 app.post("/api/report-room", reportRoom);
 app.post("/api/remove-room", removeRoom);
 app.post("/api/unfollow-user", unfollowUser);
