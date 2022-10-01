@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import * as Cryptr from "cryptr";
 
 import user from "../schema/authSchema";
 import { AuthSchemaType } from "../utils";
