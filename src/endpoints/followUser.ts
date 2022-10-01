@@ -7,7 +7,6 @@ import debug from "../utils/debug";
 /**
  * This is the follow user page this is the endpoint is used to follow a user.
  *
- * @experimental
  * @type {POST} This is a post typed endpoint.
  * @param {string} targetUser The user to follow.
  * @param {string} user The user that is following.

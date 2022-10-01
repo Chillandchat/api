@@ -6,7 +6,6 @@ import debug from "../utils/debug";
 /**
  * This is the update icon color endpoint, this endpoint as the name suggests, this endpoint will update a user's icon color.
  *
- * @experimental
  * @type {POST} The is a post typed endpoint.
  * @param {string} user The user to change the icon color.
  * @param {string} color The color to change the icon to.

@@ -5,8 +5,7 @@ import userSchema from "../schema/authSchema";
 
 /**
  * This is the update description endpoint, this endpoint will update a user's description.
- * 
- * @experimental
+ *
  * @type {POST} This is a post typed endpoint.
  * @param {string} username The username of the user to update the description of.
  * @param {string} description The new description of the user.
