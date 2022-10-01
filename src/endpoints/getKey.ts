@@ -24,7 +24,7 @@ const getKey = async (
   }
 
   try {
-    if (req.query.botKey.toString().includes(process.env.BOT_KEY_PASS)) {
+    if (!req.query.botKey.toString().includes(process.env.BOT_KEY_PASS)) {
       res.status(401).send("Invalid bot key!");
       return;
     }
@@ -43,7 +43,11 @@ const getKey = async (
           if (data.bot) {
             res
               .status(200)
-              .send(Buffer.from(process.env.API_KEY).toString("base64"));
+              .send(
+                Buffer.from(
+                  Buffer.from(process.env.API_KEY).toString("base64")
+                ).toString("binary")
+              );
           }
         }
       });
