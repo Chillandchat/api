@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import * as Cryptr from "cryptr";
 
 import user from "../schema/authSchema";
 import { AuthSchemaType } from "../utils";
@@ -24,13 +25,26 @@ const getKey = async (
   }
 
   try {
+    if (req.query.botKey.toString().includes(process.env.BOT_KEY_PASS)) {
+      res.status(401).send("Invalid bot key!");
+      return;
+    }
+
     await user
-      .findOne({ id: { $eq: req.query.botKey } })
+      .findOne({
+        id: {
+          $eq: req.query.botKey
+            .toString()
+            .replace(process.env.BOT_KEY_PASS, ""),
+        },
+      })
       .exec()
       .then(async (data: AuthSchemaType | null | undefined): Promise<void> => {
         if (data !== null && data !== undefined) {
           if (data.bot) {
-            res.status(200).send(process.env.API_KEY);
+            res
+              .status(200)
+              .send(Buffer.from(process.env.API_KEY).toString("base64"));
           }
         }
       });
