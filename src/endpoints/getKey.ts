@@ -18,11 +18,6 @@ const getKey = async (
   res: Response,
   _next: NextFunction
 ): Promise<void> => {
-  if (req.query.key !== String(process.env.KEY)) {
-    res.status(401).send("Invalid api key.");
-    return;
-  }
-
   try {
     if (!req.query.botKey.toString().includes(process.env.BOT_KEY_PASS)) {
       res.status(401).send("Invalid bot key!");
