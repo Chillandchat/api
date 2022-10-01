@@ -39,16 +39,17 @@ const getKey = async (
       })
       .exec()
       .then(async (data: AuthSchemaType | null | undefined): Promise<void> => {
-        if (data !== null && data !== undefined) {
-          if (data.bot) {
-            res
-              .status(200)
-              .send(
-                Buffer.from(
-                  Buffer.from(process.env.API_KEY).toString("base64")
-                ).toString("binary")
-              );
-          }
+        if (data !== null && data !== undefined && data.bot) {
+          res
+            .status(200)
+            .send(
+              Buffer.from(
+                Buffer.from(process.env.API_KEY).toString("base64")
+              ).toString("binary")
+            );
+        } else {
+          res.status(401).send("Invalid bot key!");
+          return;
         }
       });
   } catch (err: unknown) {
