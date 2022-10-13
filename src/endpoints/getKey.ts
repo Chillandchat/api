@@ -39,7 +39,7 @@ const getKey = async (
             .status(200)
             .send(
               Buffer.from(
-                Buffer.from(process.env.API_KEY).toString("base64")
+                Buffer.from(process.env.KEY).toString("base64")
               ).toString("binary")
             );
         } else {
