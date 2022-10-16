@@ -49,6 +49,7 @@ export interface MessageSchemaType extends mongoose.Document {
  * @param {string} name The name of the message room.
  * @param {string} users The users in the message room.
  * @param {string} iconColor The color of the icon.
+ * @param {boolean} public Weather the room is public or not.
  */
 
 export interface RoomSchemaType extends mongoose.Document {
@@ -57,4 +58,5 @@ export interface RoomSchemaType extends mongoose.Document {
   users: Array<string>;
   passcode: string;
   iconColor: string;
+  public: boolean;
 }

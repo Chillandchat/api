@@ -11,7 +11,8 @@ import debug from "../utils/debug";
  * @param {string} id The id of the room the new room
  * @param {string} name The name of the room.
  * @param {string} user The users in the room.
- * @param {string} passcode The passcode of the room.
+ * @param {string | null} passcode The passcode of the room.
+ * @param {boolean} public If the room is public
  * @returns {string} The function will return the status of the request.
  */
 
@@ -26,15 +27,21 @@ const createRoom = async (
   }
 
   try {
+    if (req.body.passcode === null && !req.body.public)
+      res
+        .status(400)
+        .send("ERROR: Password must be not null in private rooms.");
+
     await new roomSchema({
       id: req.body.id,
       name: req.body.name,
       users: [req.body.user],
-      passcode: await bcrypt.hash(
-        req.body.passcode,
-        await bcrypt.genSaltSync()
-      ),
+      passcode:
+        req.body.passcode !== null
+          ? await bcrypt.hash(req.body.passcode, await bcrypt.genSaltSync())
+          : null,
       iconColor: randomColor(),
+      public: req.body.public,
     })
       .save()
       .then((): void => {

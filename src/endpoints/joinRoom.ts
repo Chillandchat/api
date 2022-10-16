@@ -29,17 +29,18 @@ const joinRoom = async (
     await roomSchema
       .findOne({ id: { $eq: req.body.id } })
       .then(async (data: RoomSchemaType): Promise<void> => {
-        if (data.passcode !== "") {
-          if (!(await bcrypt.compare(req.body.passcode, data.passcode))) {
-            res.status(400).send("Incorrect passcode.");
-            return;
-          }
+        if (
+          !data.public &&
+          !(await bcrypt.compare(req.body.passcode, data.passcode))
+        ) {
+          res.status(400).send("Incorrect passcode.");
+          return;
         }
 
         if (data.users.indexOf(req.body.user) === -1) {
           await roomSchema
             .findOneAndUpdate(
-              { id: {$eq: req.body.id }},
+              { id: { $eq: req.body.id } },
               { $push: { users: req.body.user } }
             )
             .then(() => {
