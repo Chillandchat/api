@@ -8,7 +8,7 @@ import debug from "../utils/debug";
  * This is the get key endpoint, this endpoint as the name suggests will send the key.
  * This endpoint the cli so it can access the api.
  *
- * @experimental
+ * @deprecated This endpoint will no longer used for future updates.
  * @type {GET} This is a get typed endpoint.
  * @param {string} botKey The bot key provided from the bot utility.
  */
