@@ -60,3 +60,25 @@ export interface RoomSchemaType extends mongoose.Document {
   iconColor: string;
   public: boolean;
 }
+
+/**
+ * This is the content schema type, this is a outline of the database schema.
+ *
+ * @param {string} id The id of the uploaded content.
+ * @param {ContentType} type The type of the content.
+ * @param {string} url The url source of the uploaded content.
+ * @param {string} user The username of the user who created the content.
+ */
+
+export interface ContentSchemaType extends mongoose.Document {
+  id: string;
+  type: ContentType;
+  url: string;
+  user: string;
+}
+
+/**
+ * This is the content type type. The type defines the supported upload types to the Chill&chat cloud.
+ */
+
+export type ContentType = "CHILL&CHAT_GIF" | "CHILL&CHAT_IMG";
