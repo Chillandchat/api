@@ -57,6 +57,8 @@ import updateDescription from "./endpoints/updateDescription";
 import updateIconColor from "./endpoints/updateIconColor";
 import getKey from "./endpoints/getKey";
 import getPublicRooms from "./endpoints/getPublicRooms";
+import getContent from "./endpoints/getContent";
+import uploadContent from "./endpoints/uploadContent";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -87,10 +89,12 @@ app.get("/site-map", siteMap);
 app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
-app.get("/api/get-key", getKey);
+app.get("/api/get-key", getKey); // Deprecated.
+app.get("/api/get-content", getContent);
 app.get("/api/get-public-rooms", getPublicRooms);
 app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
+app.post("/api/upload-content", uploadContent);
 app.post("/api/create-room", createRoom);
 app.post("/api/join-room", joinRoom);
 app.post("/api/report-room", reportRoom);
