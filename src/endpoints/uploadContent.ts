@@ -27,6 +27,13 @@ const uploadContent = async (
   }
 
   try {
+    // 16000000 bits = 2MB
+    // 8000000 bits = 1MB
+    // 1 base-64 char = 6 bits
+
+    if (req.body.type.length * 6 > 16000000)
+      res.status(400).send("Upload cannot be larger than 2MB!");
+
     fs.writeFileSync(
       `../../user-content/${req.body.user}/${req.body.id}.${
         req.body.type === "CHILL&CHAT_GIF" ? "gif" : "img"
