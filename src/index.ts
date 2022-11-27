@@ -32,6 +32,7 @@ import mongoose from "mongoose";
 import { createServer } from "http";
 import express from "express";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 
 import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
@@ -59,6 +60,7 @@ import getKey from "./endpoints/getKey";
 import getPublicRooms from "./endpoints/getPublicRooms";
 import getContent from "./endpoints/getContent";
 import uploadContent from "./endpoints/uploadContent";
+import content from "./schema/contentSchema";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -78,7 +80,7 @@ debug.init();
 
 mongoose.connect(String(process.env.DATABASE_URI));
 
-app.use(express.json());
+app.use(express.json({ limit: "2mb" }));
 app.use(apiLimiter);
 
 app.get("/", home);
@@ -167,6 +169,41 @@ io.on("connection", (socket: Socket): void => {
       key: string
     ): Promise<void> => {
       if (key === process.env.KEY) {
+        let messageData: MessageSchemaType;
+
+        await message
+          .findOne({ id: { $eq: id } })
+          .then((message: MessageSchemaType): void => {
+            message = messageData;
+          })
+          .catch((err: unknown): void => {
+            io.emit(`error:token(${responseToken})`, err);
+          });
+
+        if (
+          await content.exists({
+            url: {
+              $eq: {
+                $regex: messageData.content.slice(
+                  3,
+                  messageData.content.length - 1
+                ),
+              },
+            },
+          })
+        ) {
+          await content.findOneAndDelete({
+            url: {
+              $eq: {
+                $regex: messageData.content.slice(
+                  3,
+                  messageData.content.length - 1
+                ),
+              },
+            },
+          });
+        }
+
         await message
           .findOneAndDelete({ id: { $eq: id } })
           .then((): void => {
