@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
 
-import content from "../schema/contentSchema";
+import Content from "../schema/contentSchema";
 import debug from "../utils/debug";
 
 /**
@@ -27,30 +27,28 @@ const uploadContent = async (
   }
 
   try {
-    // 16000000 bits = 2MB
-    // 8000000 bits = 1MB
-    // 1 base-64 char = 6 bits
-
-    if (req.body.type.length * 6 > 16000000)
-      res.status(400).send("Upload cannot be larger than 2MB!");
+    if (!fs.existsSync(`${__dirname}/../user-content/${req.body.user}`))
+      fs.mkdirSync(`${__dirname}/../user-content/${req.body.user}`, {
+        recursive: true,
+      });
 
     fs.writeFileSync(
-      `../../user-content/${req.body.user}/${req.body.id}.${
-        req.body.type === "CHILL&CHAT_GIF" ? "gif" : "img"
+      `${__dirname}/../user-content/${req.body.user}/${req.body.id}.${
+        req.body.type === "CHILL&CHAT_GIF" ? "gif" : "png"
       }`,
       req.body.content,
       "base64"
     );
 
-    await new content({
+    await new Content({
       id: req.body.id,
       type: req.body.type,
-      url: ` ${req.protocol}://${req.get("host")}/get-content?user=${
+      url: `${req.protocol}://${req.get("host")}/get-content?user=${
         req.body.user
       }&id=${req.body.id}`,
       user: req.body.user,
     })
-      .exec()
+      .save()
       .then((): void => {
         res.status(201).send("Image saved.");
         debug.log("New image saved.");
