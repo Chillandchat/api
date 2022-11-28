@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
+import sharp from "sharp";
 
 import Content from "../schema/contentSchema";
 import debug from "../utils/debug";
@@ -34,9 +35,11 @@ const uploadContent = async (
 
     fs.writeFileSync(
       `${__dirname}/../user-content/${req.body.user}/${req.body.id}.${
-        req.body.type === "CHILL&CHAT_GIF" ? "gif" : "png"
+        req.body.type === "CHILL&CHAT_GIF" ? "gif" : "webp"
       }`,
-      req.body.content,
+      await sharp(Buffer.from(req.body.content, "base64"))
+        .webp({ lossless: true })
+        .toBuffer(),
       "base64"
     );
 

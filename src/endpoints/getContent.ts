@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
+import sharp from "sharp";
 
 import debug from "../utils/debug";
 
@@ -12,7 +13,11 @@ import debug from "../utils/debug";
  * @param {string} user The user who sent the file.
  */
 
-const getContent = (req: Request, res: Response, _next: NextFunction): void => {
+const getContent = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> => {
   const path: string = `${__dirname}/../user-content/${req.query.user}/${req.query.id}.`;
   let data: string;
 
@@ -25,9 +30,9 @@ const getContent = (req: Request, res: Response, _next: NextFunction): void => {
     if (fs.existsSync(`${path}gif`)) {
       data = fs.readFileSync(`${path}gif`, "base64").toString();
       debug.log(`Sent ${req.query.id}.gif`);
-    } else if (fs.existsSync(`${path}png`)) {
-      data = fs.readFileSync(`${path}png`, "base64").toString();
-      debug.log(`Sent ${req.query.id}.png`);
+    } else if (fs.existsSync(`${path}webp`)) {
+      data = fs.readFileSync(`${path}webp`, "base64").toString();
+      debug.log(`Sent ${req.query.id}.webp`);
     } else {
       res
         .status(400)
