@@ -78,7 +78,11 @@ const apiLimiter = rateLimit({
 dotenv.config();
 debug.init();
 
-mongoose.connect(String(process.env.DATABASE_URI));
+const connectDatabase = async (): Promise<void> => {
+  await mongoose.connect(String(process.env.DATABASE_URI));
+};
+
+connectDatabase().then((): void => {});
 
 app.use(express.json({ limit: "2mb" }));
 app.use(apiLimiter);
