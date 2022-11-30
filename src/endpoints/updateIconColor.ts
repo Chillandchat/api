@@ -24,6 +24,10 @@ const updateIconColor = async (
   }
 
   try {
+    if (!req.body.color.match(/^#(?:[0-9a-fA-F]{3}){1,2}$/)) {
+      res.send("Invalid input color, please enter a valid hex.");
+    }
+
     await user
       .findOneAndUpdate(
         { username: { $eq: req.body.user } },
