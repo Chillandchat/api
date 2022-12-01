@@ -8,8 +8,6 @@ import debug from "../utils/debug";
 /**
  * This is the upload content endpoint, this endpoint will save the content in the server.
  *
- * @experimental
- *
  * @type {POST} This is a POST typed endpoint.
  * @param {string} id The id of the content.
  * @param {string} content The content of the file.

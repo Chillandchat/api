@@ -6,7 +6,6 @@ import debug from "../utils/debug";
 /**
  * This is the get content endpoint, this endpoint will fetch and send the file to the client.
  *
- * @experimental
  * @type {GET} This endpoint is a GET typed endpoint.
  * @param {string} id The id of the content from the database.
  * @param {string} user The user who sent the file.
