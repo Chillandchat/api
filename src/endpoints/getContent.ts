@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
-import sharp from "sharp";
 
 import debug from "../utils/debug";
 
