@@ -37,7 +37,7 @@ const getContent = async (
         .send(`${req.query.id} was not found in ${req.query.user}'s folder.`);
     }
 
-    res.status(200).send(data);
+    res.status(200).send(`data:image/webp;base64,${data}`);
   } catch (err: unknown) {
     res.status(500).send(`SERVER ERROR: ${err}`);
     debug.error(err);
