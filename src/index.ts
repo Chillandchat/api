@@ -174,7 +174,7 @@ io.on("connection", (socket: Socket): void => {
         await message
           .findOne({ id: { $eq: id } })
           .then((message: MessageSchemaType): void => {
-            message = messageData;
+            messageData = message;
           })
           .catch((err: unknown): void => {
             io.emit(`error:token(${responseToken})`, err);
