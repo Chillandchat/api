@@ -1,4 +1,4 @@
-<p align="center"how><img src="https://github.com/Chillandchat/api/blob/master/logo.svg/" style="width:12rem;"/></p>
+<p align="center"how><img src="https://github.com/Chillandchat/.github/blob/main/logo.svg" style="width:12rem;"/></p>
 
 # Chill&chat API
 ![](https://img.shields.io/github/repo-size/Chillandchat/api) ![](https://img.shields.io/github/v/release/chillandchat/api?label=Latest%20release&logo=Chill%26chat) ![](https://img.shields.io/github/issues-pr-closed/Chillandchat/api) ![](https://img.shields.io/github/issues-pr-raw/Chillandchat/api) [![CodeQL](https://github.com/Chillandchat/api/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Chillandchat/api/actions/workflows/codeql-analysis.yml)
