@@ -169,47 +169,43 @@ io.on("connection", (socket: Socket): void => {
       key: string
     ): Promise<void> => {
       if (key === process.env.KEY) {
-        let messageData: MessageSchemaType;
-
         await message
           .findOne({ id: { $eq: id } })
-          .then((message: MessageSchemaType): void => {
-            messageData = message;
-          })
-          .catch((err: unknown): void => {
-            io.emit(`error:token(${responseToken})`, err);
-          });
+          .then(async (messageData: MessageSchemaType): Promise<void> => {
+            if (
+              await content.exists({
+                url: {
+                  $eq: {
+                    $regex: messageData.content.slice(
+                      3,
+                      messageData.content.length - 1
+                    ),
+                  },
+                },
+              })
+            ) {
+              await content.findOneAndDelete({
+                url: {
+                  $eq: {
+                    $regex: messageData.content.slice(
+                      3,
+                      messageData.content.length - 1
+                    ),
+                  },
+                },
+              });
+            }
 
-        if (
-          await content.exists({
-            url: {
-              $eq: {
-                $regex: messageData.content.slice(
-                  3,
-                  messageData.content.length - 1
-                ),
-              },
-            },
-          })
-        ) {
-          await content.findOneAndDelete({
-            url: {
-              $eq: {
-                $regex: messageData.content.slice(
-                  3,
-                  messageData.content.length - 1
-                ),
-              },
-            },
-          });
-        }
-
-        await message
-          .findOneAndDelete({ id: { $eq: id } })
-          .then((): void => {
-            io.emit(`client-message-delete:room(${room})`, id);
-            io.emit(`deleted:token(${responseToken})`);
-            debug.log(`Deleted message ${id}`);
+            await message
+              .findOneAndDelete({ id: { $eq: id } })
+              .then((): void => {
+                io.emit(`client-message-delete:room(${room})`, id);
+                io.emit(`deleted:token(${responseToken})`);
+                debug.log(`Deleted message ${id}`);
+              })
+              .catch((err: unknown): void => {
+                io.emit(`error:token(${responseToken})`, err);
+              });
           })
           .catch((err: unknown): void => {
             io.emit(`error:token(${responseToken})`, err);
