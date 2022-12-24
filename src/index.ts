@@ -32,7 +32,6 @@ import mongoose from "mongoose";
 import { createServer } from "http";
 import express from "express";
 import dotenv from "dotenv";
-import bodyParser from "body-parser";
 
 import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
@@ -56,7 +55,6 @@ import unfollowUser from "./endpoints/unfollowuser";
 import followUser from "./endpoints/followUser";
 import updateDescription from "./endpoints/updateDescription";
 import updateIconColor from "./endpoints/updateIconColor";
-import getKey from "./endpoints/getKey";
 import getPublicRooms from "./endpoints/getPublicRooms";
 import getContent from "./endpoints/getContent";
 import uploadContent from "./endpoints/uploadContent";
@@ -91,7 +89,6 @@ app.get("/site-map", siteMap);
 app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
-app.get("/api/get-key", getKey); // Deprecated.
 app.get("/api/get-content", getContent);
 app.get("/api/get-public-rooms", getPublicRooms);
 app.post("/api/search-message", searchMessage);
