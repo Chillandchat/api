@@ -1,6 +1,6 @@
 {
   "name": "@chillandchat/api",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "main": "./build/js/index.js",
   "author": "Alvin cheng",
   "license": "MIT",
