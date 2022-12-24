@@ -175,23 +175,19 @@ io.on("connection", (socket: Socket): void => {
             if (
               await content.exists({
                 url: {
-                  $eq: {
-                    $regex: messageData.content.slice(
-                      3,
-                      messageData.content.length - 1
-                    ),
-                  },
+                  $eq: messageData.content.slice(
+                    3,
+                    messageData.content.length - 1
+                  ),
                 },
               })
             ) {
               await content.findOneAndDelete({
                 url: {
-                  $eq: {
-                    $regex: messageData.content.slice(
-                      3,
-                      messageData.content.length - 1
-                    ),
-                  },
+                  $eq: messageData.content.slice(
+                    3,
+                    messageData.content.length - 1
+                  ),
                 },
               });
             }
