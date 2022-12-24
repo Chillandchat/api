@@ -80,7 +80,7 @@ debug.init();
 
 mongoose.connect(String(process.env.DATABASE_URI));
 
-app.use(express.json({ limit: "2mb" }));
+app.use(express.json({ limit: "10mb" }));
 app.use(apiLimiter);
 
 app.get("/", home);
