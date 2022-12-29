@@ -25,9 +25,9 @@ const getContent = async (
   }
 
   try {
-    if (fs.existsSync(`${path}gif`)) {
-      data = fs.readFileSync(`${path}gif`);
-      debug.log(`Sent ${req.query.id}.gif`);
+    if (fs.existsSync(`${path}mp4`)) {
+      data = fs.readFileSync(`${path}mp4`);
+      debug.log(`Sent ${req.query.id}.mp4`);
     } else if (fs.existsSync(`${path}webp`)) {
       data = fs.readFileSync(`${path}webp`);
       debug.log(`Sent ${req.query.id}.webp`);
