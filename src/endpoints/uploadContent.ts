@@ -33,7 +33,7 @@ const uploadContent = async (
 
     fs.writeFileSync(
       `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${
-        req.body.type === "CHILL&CHAT_VIDEO" ? "mp4" : "webp"
+        req.body.type === "CHILL&CHAT_GIF" ? "gif" : "webp"
       }`,
       await sharp(Buffer.from(req.body.content, "base64"))
         .webp({ lossless: true })
