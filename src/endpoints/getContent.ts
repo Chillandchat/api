@@ -16,7 +16,7 @@ const getContent = async (
   res: Response,
   _next: NextFunction
 ): Promise<void> => {
-  const path: string = `${__dirname}/../user-content/${req.query.user}/${req.query.id}.`;
+  const path: string = `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.`;
   let data: Buffer;
 
   if (req.query.key !== String(process.env.KEY)) {

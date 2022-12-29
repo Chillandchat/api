@@ -26,13 +26,13 @@ const uploadContent = async (
   }
 
   try {
-    if (!fs.existsSync(`${__dirname}/../user-content/${req.body.user}`))
-      fs.mkdirSync(`${__dirname}/../user-content/${req.body.user}`, {
+    if (!fs.existsSync(`${__dirname}/../../user-content/${req.body.user}`))
+      fs.mkdirSync(`${__dirname}/../../user-content/${req.body.user}`, {
         recursive: true,
       });
 
     fs.writeFileSync(
-      `${__dirname}/../user-content/${req.body.user}/${req.body.id}.${
+      `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${
         req.body.type === "CHILL&CHAT_GIF" ? "gif" : "webp"
       }`,
       await sharp(Buffer.from(req.body.content, "base64"))
