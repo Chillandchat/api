@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import sharp from "sharp";
+import { exec } from "child_process";
 
 import Content from "../schema/contentSchema";
 import debug from "../utils/debug";
@@ -33,13 +34,25 @@ const uploadContent = async (
 
     fs.writeFileSync(
       `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${
-        req.body.type === "CHILL&CHAT_GIF" ? "gif" : "webp"
+        req.body.type === "CHILL&CHAT_GIF" ? "mp4" : "webp"
       }`,
-      await sharp(Buffer.from(req.body.content, "base64"))
-        .webp({ lossless: true })
-        .toBuffer(),
+      req.body.type === "CHILL&CHAT_GIF"
+        ? Buffer.from(req.body.content, "base64")
+        : await sharp(Buffer.from(req.body.content, "base64"))
+            .webp({ lossless: true })
+            .toBuffer(),
       "base64"
     );
+
+    if (req.body.type === "CHILL&CHAT_GIF") {
+      exec(
+        `ffmpeg -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.mp4 -qscale 0 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`
+      );
+
+      fs.unlinkSync(
+        `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.mp4`
+      );
+    }
 
     await new Content({
       id: req.body.id,
