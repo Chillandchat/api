@@ -57,6 +57,12 @@ Npm:
 ```sh
 npm install && npm build && npm start # Installs packages, builds and starts the app with npm
 ```
+
+### Note:
+From v1.8.0, you must have ```ffmpeg``` installed on your machine to convert GIFs from mp4 video formats. 
+
+**More information and download link:** https://ffmpeg.org/
+
 ### Docs
 The API documentation can be found in the wiki or by clicking [here](https://github.com/Chillandchat/api/wiki)
 
