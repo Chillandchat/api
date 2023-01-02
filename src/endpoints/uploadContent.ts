@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import sharp from "sharp";
 import { exec } from "child_process";
-import { fromBuffer } from "file-type";
+import { FileTypeResult, fileTypeFromBuffer } from "file-type";
 
 import Content from "../schema/contentSchema";
 import debug from "../utils/debug";
@@ -28,7 +28,12 @@ const uploadContent = async (
   }
 
   try {
-    const fileType: string = req.body.type === "CHILL&CHAT_GIF" ? fromBuffer(Buffer.from(req.body.content)).ext : "webp"; 
+    const videoFormat: FileTypeResult | null =
+      req.body.type === "CHILL&CHAT_GIF"
+        ? await fileTypeFromBuffer(Buffer.from(req.body.content))
+        : null;
+
+    const fileType: string = videoFormat !== null ? videoFormat.ext : "webp";
 
     if (!fs.existsSync(`${__dirname}/../../user-content/${req.body.user}`))
       fs.mkdirSync(`${__dirname}/../../user-content/${req.body.user}`, {
@@ -36,9 +41,7 @@ const uploadContent = async (
       });
 
     fs.writeFileSync(
-      `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${
-         fileType 
-       }`,
+      `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType}`,
       req.body.type === "CHILL&CHAT_GIF"
         ? Buffer.from(req.body.content, "base64")
         : await sharp(Buffer.from(req.body.content, "base64"))
