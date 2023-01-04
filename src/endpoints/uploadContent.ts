@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import sharp from "sharp";
 import { exec } from "child_process";
-import { FileTypeResult, fileTypeFromBuffer } from "file-type";
+import { FileTypeResult, fromBuffer } from "file-type";
 
 import Content from "../schema/contentSchema";
 import debug from "../utils/debug";
@@ -28,9 +28,9 @@ const uploadContent = async (
   }
 
   try {
-    const videoFormat: FileTypeResult | null =
+    const videoFormat: FileTypeResult | null | undefined =
       req.body.type === "CHILL&CHAT_GIF"
-        ? await fileTypeFromBuffer(Buffer.from(req.body.content))
+        ? await fromBuffer(Buffer.from(req.body.content, "base64"))
         : null;
 
     const fileType: string = videoFormat !== null ? videoFormat.ext : "webp";
