@@ -34,7 +34,6 @@ const uploadContent = async (
         : null;
 
     const fileType: string = videoFormat !== null ? videoFormat.ext : "webp";
-
     if (!fs.existsSync(`${__dirname}/../../user-content/${req.body.user}`))
       fs.mkdirSync(`${__dirname}/../../user-content/${req.body.user}`, {
         recursive: true,
@@ -52,10 +51,20 @@ const uploadContent = async (
 
     if (req.body.type === "CHILL&CHAT_GIF") {
       exec(
-        `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24 -r 10 -s 320x240 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
+        `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
         async (_error: unknown): Promise<void> => {
+          await sharp(
+            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
+            { animated: true }
+          ).toFile(
+            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.webp`
+          );
+
           fs.unlinkSync(
             `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType}`
+          );
+          fs.unlinkSync(
+            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`
           );
         }
       );
