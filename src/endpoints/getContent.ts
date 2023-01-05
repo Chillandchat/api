@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
+import * as _path from "path";
 
 import debug from "../utils/debug";
 
@@ -17,7 +18,6 @@ const getContent = async (
   _next: NextFunction
 ): Promise<void> => {
   const path: string = `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.`;
-  let data: Buffer;
 
   if (req.query.key !== String(process.env.KEY)) {
     res.status(401).send("Invalid api key.");
@@ -25,19 +25,15 @@ const getContent = async (
   }
 
   try {
-    if (fs.existsSync(`${path}gif`)) {
-      data = fs.readFileSync(`${path}gif`);
-      debug.log(`Sent ${req.query.id}.gif`);
-    } else if (fs.existsSync(`${path}webp`)) {
-      data = fs.readFileSync(`${path}webp`);
-      debug.log(`Sent ${req.query.id}.webp`);
+    if (fs.existsSync(`${path}webp`)) {
+      res.sendFile(_path.resolve(`${path}webp`));
     } else {
       res
         .status(400)
         .send(`${req.query.id} was not found in ${req.query.user}'s folder.`);
-    }
 
-    res.status(200).send(data);
+      return;
+    }
   } catch (err: unknown) {
     res.status(500).send(`SERVER ERROR: ${err}`);
     debug.error(err);
