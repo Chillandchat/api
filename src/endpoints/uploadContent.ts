@@ -53,16 +53,6 @@ const uploadContent = async (
       exec(
         `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
         async (_error: unknown): Promise<void> => {
-          await sharp(
-            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
-            { animated: true }
-          ).toFile(
-            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.webp`
-          );
-
-          fs.unlinkSync(
-            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType}`
-          );
           fs.unlinkSync(
             `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`
           );
