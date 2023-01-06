@@ -30,7 +30,8 @@
 import { Server, Socket } from "socket.io";
 import mongoose from "mongoose";
 import { createServer } from "http";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
+import path from "path";
 import dotenv from "dotenv";
 
 import { MessageSchemaType } from "./utils";
@@ -56,7 +57,6 @@ import followUser from "./endpoints/followUser";
 import updateDescription from "./endpoints/updateDescription";
 import updateIconColor from "./endpoints/updateIconColor";
 import getPublicRooms from "./endpoints/getPublicRooms";
-import getContent from "./endpoints/getContent";
 import uploadContent from "./endpoints/uploadContent";
 import content from "./schema/contentSchema";
 
@@ -81,6 +81,8 @@ mongoose.connect(String(process.env.DATABASE_URI));
 app.use(express.json({ limit: "10mb" }));
 app.use(apiLimiter);
 
+app.use("/content", express.static(path.join(__dirname, "../user-content/")));
+
 app.get("/", home);
 app.post("/api/signup", signup);
 app.post("/api/login", login);
@@ -89,7 +91,6 @@ app.get("/site-map", siteMap);
 app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
-app.get("/api/get-content", getContent);
 app.get("/api/get-public-rooms", getPublicRooms);
 app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
