@@ -51,7 +51,7 @@ const uploadContent = async (
 
     if (req.body.type === "CHILL&CHAT_GIF") {
       exec(
-        `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
+        `ffmpeg -ss 00:00:00.000 -s 320x240 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
         async (_error: unknown): Promise<void> => {
           fs.unlinkSync(
             `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`
