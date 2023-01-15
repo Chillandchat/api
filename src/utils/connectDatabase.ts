@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+
 import debug from "./debug";
 
 /**
- * This is the connectDB function, this function will connect the server to the mongoDB database via mongoose.
+ * This is the connectDatabase function, this function will connect the server to the mongoDB database via mongoose.
  * This function uses the await keyword in order to wait for the connection to be finished
  * due to the asynchronous nature of mongoose.connect().
  *
