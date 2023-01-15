@@ -76,7 +76,12 @@ const apiLimiter = rateLimit({
 dotenv.config();
 debug.init();
 
-mongoose.connect(String(process.env.DATABASE_URI));
+mongoose
+  .connect(String(process.env.DATABASE_URI))
+  .catch((err: unknown): void => {
+    debug.error(err);
+    process.exit(1);
+  });
 
 app.use(express.json({ limit: "10mb" }));
 app.use(apiLimiter);
