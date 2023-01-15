@@ -30,7 +30,7 @@
 import { Server, Socket } from "socket.io";
 import mongoose from "mongoose";
 import { createServer } from "http";
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import path from "path";
 import dotenv from "dotenv";
 
@@ -59,6 +59,7 @@ import updateIconColor from "./endpoints/updateIconColor";
 import getPublicRooms from "./endpoints/getPublicRooms";
 import uploadContent from "./endpoints/uploadContent";
 import content from "./schema/contentSchema";
+import connectDatabase from "./utils/connectDatabase";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -76,7 +77,7 @@ const apiLimiter = rateLimit({
 dotenv.config();
 debug.init();
 
-mongoose.connect(String(process.env.DATABASE_URI));
+connectDatabase();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(apiLimiter);
