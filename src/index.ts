@@ -59,6 +59,7 @@ import updateIconColor from "./endpoints/updateIconColor";
 import getPublicRooms from "./endpoints/getPublicRooms";
 import uploadContent from "./endpoints/uploadContent";
 import content from "./schema/contentSchema";
+import connectDatabase from "./utils/connectDatabase";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -76,12 +77,7 @@ const apiLimiter = rateLimit({
 dotenv.config();
 debug.init();
 
-mongoose
-  .connect(String(process.env.DATABASE_URI))
-  .catch((err: unknown): void => {
-    debug.error(err);
-    process.exit(1);
-  });
+connectDatabase();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(apiLimiter);
