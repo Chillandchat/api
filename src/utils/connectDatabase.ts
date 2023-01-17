@@ -11,6 +11,7 @@ import debug from "./debug";
  */
 
 const connectDatabase = async (): Promise<void> => {
+  mongoose.set("strictQuery", true);
   await mongoose
     .connect(String(process.env.DATABASE_URI))
     .catch((err: unknown): void => {
