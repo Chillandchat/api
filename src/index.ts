@@ -60,6 +60,7 @@ import getPublicRooms from "./endpoints/getPublicRooms";
 import uploadContent from "./endpoints/uploadContent";
 import content from "./schema/contentSchema";
 import connectDatabase from "./utils/connectDatabase";
+import getGif from "./endpoints/getGif";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -92,6 +93,7 @@ app.get("/site-map", siteMap);
 app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
+app.get("/api/get-gif", getGif);
 app.get("/api/get-public-rooms", getPublicRooms);
 app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
