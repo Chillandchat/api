@@ -9,7 +9,7 @@ import messages from "../schema/messageSchema";
  * This is the delete user endpoint. This endpoint will as the name suggests,
  * Delete the provided user in the user field.
  *
- * @type {GET} This is a get typed endpoint.
+ * @type {POST} This is a get typed endpoint.
  * @param {string} user The user to delete.
  */
 

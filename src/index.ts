@@ -94,7 +94,7 @@ app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
 app.get("/api/get-public-rooms", getPublicRooms);
-app.get("/api/delete-user", deleteUser);
+app.post("/api/delete-user", deleteUser);
 app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
 app.post("/api/upload-content", uploadContent);
