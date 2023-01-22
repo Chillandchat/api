@@ -31,7 +31,7 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
           return;
         }
         await messages
-          .deleteMany({ user: req.body.user })
+          .deleteMany({ user: { $eq: req.body.user } })
           .exec()
           .then(async (): Promise<void> => {
             await userSchema
