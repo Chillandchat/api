@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 import { AuthSchemaType } from "../utils/index.d";
 import userSchema from "../schema/authSchema";
@@ -13,7 +13,11 @@ import messages from "../schema/messageSchema";
  * @param {string} user The user to delete.
  */
 
-const deleteUser = async (req: Request, res: Response): Promise<void> => {
+const deleteUser = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> => {
   if (req.query.key !== String(process.env.KEY)) {
     res.status(401).send("Invalid api key.");
     return;
