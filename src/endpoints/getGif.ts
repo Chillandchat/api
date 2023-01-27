@@ -9,7 +9,7 @@ import debug from "../utils/debug";
  *
  * @param {string} search The search term.
  * @returns {Array<unknown>} Returns the gif images in an array format.
- * @see https://developers.giphy.com/docs/api/schema#gif-object for schema def.
+ * @see https://developers.giphy.com/docs/api/schema#gif-object for schema definition.
  */
 
 const getGif = async (
