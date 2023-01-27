@@ -61,6 +61,7 @@ import uploadContent from "./endpoints/uploadContent";
 import content from "./schema/contentSchema";
 import connectDatabase from "./utils/connectDatabase";
 import getGif from "./endpoints/getGif";
+import deleteUser from "./endpoints/deleteUser";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -95,6 +96,7 @@ app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
 app.get("/api/get-gif", getGif);
 app.get("/api/get-public-rooms", getPublicRooms);
+app.post("/api/delete-user", deleteUser);
 app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
 app.post("/api/upload-content", uploadContent);
