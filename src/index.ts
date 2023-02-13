@@ -62,6 +62,7 @@ import content from "./schema/contentSchema";
 import connectDatabase from "./utils/connectDatabase";
 import getGif from "./endpoints/getGif";
 import deleteUser from "./endpoints/deleteUser";
+import verifyClient from "./endpoints/verifyClient";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -94,6 +95,7 @@ app.get("/site-map", siteMap);
 app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
+app.get("/api/verify-client", verifyClient);
 app.get("/api/get-gif", getGif);
 app.get("/api/get-public-rooms", getPublicRooms);
 app.post("/api/delete-user", deleteUser);
