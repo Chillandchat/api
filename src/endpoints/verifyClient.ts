@@ -16,7 +16,7 @@ const verifyClient = (
   res: Response,
   _next: NextFunction
 ): void => {
-  if (req.query.key === process.env.API_KEY) {
+  if (req.query.key === process.env.KEY) {
     res.status(200).send("Verified successfully");
     debug.log(`Verified: ${req.socket.remoteAddress}`);
   } else {
