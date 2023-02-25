@@ -51,28 +51,9 @@ const uploadContent = async (
 
     if (req.body.type === "CHILL&CHAT_GIF") {
       exec(
-        `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24  -s 320x240 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`,
-        async (_error: unknown): Promise<void> => {
-          fs.unlinkSync(
-            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType}`
-          );
-        }
+        `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24  -s 320x240 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`
       );
     }
-
-    await new Content({
-      id: req.body.id,
-      type: req.body.type,
-      url: `${req.protocol}://${req.get("host")}/get-content?user=${
-        req.body.user
-      }&id=${req.body.id}`,
-      user: req.body.user,
-    })
-      .save()
-      .then((): void => {
-        res.status(201).send("Image saved.");
-        debug.log("New image saved.");
-      });
   } catch (err: unknown) {
     res.status(500).send(`SERVER ERROR: ${err}`);
     debug.error(err);
