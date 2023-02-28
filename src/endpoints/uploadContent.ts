@@ -4,7 +4,6 @@ import sharp from "sharp";
 import { exec } from "child_process";
 import { FileTypeResult, fromBuffer } from "file-type";
 
-import Content from "../schema/contentSchema";
 import debug from "../utils/debug";
 
 /**
