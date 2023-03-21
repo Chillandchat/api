@@ -39,16 +39,20 @@ const uploadToken = async (
                 res.status(201).send("Created new notification entry.");
               });
           } else {
-            notification
-              .findOneAndUpdate(
-                { user: req.body.user },
-                { token: req.body.token }
-              )
-              .exec()
-              .then((): void => {
-                debug.log("Updated notification entry.");
-                res.status(200).send("Updated entry successfully.");
-              });
+            if (notificationInstance.token === req.body.token) {
+              res.status(208).send("Token entry already uploaded.");
+            } else {
+              notification
+                .findOneAndUpdate(
+                  { user: req.body.user },
+                  { token: req.body.token }
+                )
+                .exec()
+                .then((): void => {
+                  debug.log("Updated notification entry.");
+                  res.status(200).send("Updated entry successfully.");
+                });
+            }
           }
         }
       );
