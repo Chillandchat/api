@@ -24,13 +24,13 @@ const uploadToken = async (
   }
   try {
     await notification
-      .findOne({ id: req.body.user })
+      .findOne({ user: req.body.user })
       .exec()
       .then(
         async (notificationInstance: NotificationSchemaType): Promise<void> => {
           if (notificationInstance === null) {
             await new notification({
-              id: req.body.user,
+              user: req.body.user,
               token: req.body.token,
             })
               .save()
@@ -41,7 +41,7 @@ const uploadToken = async (
           } else {
             notification
               .findOneAndUpdate(
-                { id: req.body.user },
+                { user: req.body.user },
                 { token: req.body.token }
               )
               .exec()
