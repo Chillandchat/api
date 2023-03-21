@@ -8,7 +8,7 @@ import { NotificationSchemaType } from "../utils";
  * This is the upload token endpoint, this endpoint will create or modify the token database entry.
  *
  * @experimental
- * @param {string} user The user refrence of the new/old entry.
+ * @param {string} user The user reference of the new/old entry.
  * @param {string} token The new token of the notification entry.
  * @type {POST} The is a post typed endpoint.
  */
