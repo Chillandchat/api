@@ -62,6 +62,7 @@ import connectDatabase from "./utils/connectDatabase";
 import getGif from "./endpoints/getGif";
 import deleteUser from "./endpoints/deleteUser";
 import verifyClient from "./endpoints/verifyClient";
+import sendNotifications from "./utils/sendNotification";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -120,6 +121,8 @@ io.on("connection", (socket: Socket): void => {
       responseToken: string
     ): Promise<void> => {
       if (key === process.env.KEY) {
+        await sendNotifications(payload.room, payload);
+
         io.emit(`client-message:room(${payload.room})`, payload);
         const newMessage = new message({
           id: payload.id,
