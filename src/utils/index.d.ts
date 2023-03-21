@@ -80,12 +80,12 @@ export interface ContentSchemaType extends mongoose.Document {
 /**
  * This is the notification schema type, this ia a outline of the database schema.
  *
- * @param {string} id The user id of the notification token for reference.
+ * @param {string} user The user of the notification token for reference.
  * @param {string} token The token for notification services.
  */
 
 export interface NotificationSchemaType extends mongoose.Document {
-  id: string;
+  user: string;
   token: string;
 }
 /**

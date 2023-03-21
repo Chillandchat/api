@@ -8,7 +8,7 @@ import { NotificationSchemaType } from "../utils";
  * This is the upload token endpoint, this endpoint will create or modify the token database entry.
  *
  * @experimental
- * @param {string} id The id of the new/old entry.
+ * @param {string} user The user refrence of the new/old entry.
  * @param {string} token The new token of the notification entry.
  * @type {POST} The is a post typed endpoint.
  */
@@ -24,13 +24,13 @@ const uploadToken = async (
   }
   try {
     await notification
-      .findOne({ id: req.body.id })
+      .findOne({ id: req.body.user })
       .exec()
       .then(
         async (notificationInstance: NotificationSchemaType): Promise<void> => {
           if (notificationInstance === null) {
             await new notification({
-              id: req.body.id,
+              id: req.body.user,
               token: req.body.token,
             })
               .save()
@@ -40,7 +40,10 @@ const uploadToken = async (
               });
           } else {
             notification
-              .findOneAndUpdate({ id: req.body.id }, { token: req.body.token })
+              .findOneAndUpdate(
+                { id: req.body.user },
+                { token: req.body.token }
+              )
               .exec()
               .then((): void => {
                 debug.log("Updated notification entry.");

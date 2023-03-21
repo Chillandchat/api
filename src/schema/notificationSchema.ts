@@ -8,7 +8,7 @@ import { NotificationSchemaType } from "../utils";
  */
 
 const schema: any = new mongoose.Schema({
-  id: String,
+  user: String,
   token: String,
 });
 
