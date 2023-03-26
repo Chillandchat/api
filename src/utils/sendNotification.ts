@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Expo } from "expo-server-sdk";
 
 import { MessageSchemaType, RoomSchemaType } from "./index.d";
