@@ -5,7 +5,6 @@ import debug from "../utils/debug";
 /**
  * This is the verify client endpoint, this endpoint will verify the legitimacy of the client.
  *
- * @experimental
  * @type {GET} This is a get typed endpoint.
  * @param {string} key The API key that will be used to verify client.
  * @returns {string} The result in a string if the client is legit.

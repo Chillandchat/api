@@ -28,7 +28,6 @@
  */
 
 import { Server, Socket } from "socket.io";
-import mongoose from "mongoose";
 import { createServer } from "http";
 import express from "express";
 import path from "path";
@@ -63,6 +62,8 @@ import connectDatabase from "./utils/connectDatabase";
 import getGif from "./endpoints/getGif";
 import deleteUser from "./endpoints/deleteUser";
 import verifyClient from "./endpoints/verifyClient";
+import sendNotifications from "./utils/sendNotification";
+import uploadToken from "./endpoints/uploadToken";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -110,6 +111,7 @@ app.post("/api/unfollow-user", unfollowUser);
 app.post("/api/follow-user", followUser);
 app.post("/api/update-description", updateDescription);
 app.post("/api/update-icon-color", updateIconColor);
+app.post("/api/upload-token", uploadToken);
 
 // Socket server:
 io.on("connection", (socket: Socket): void => {
@@ -121,6 +123,8 @@ io.on("connection", (socket: Socket): void => {
       responseToken: string
     ): Promise<void> => {
       if (key === process.env.KEY) {
+        await sendNotifications(payload.room, payload);
+
         io.emit(`client-message:room(${payload.room})`, payload);
         const newMessage = new message({
           id: payload.id,
