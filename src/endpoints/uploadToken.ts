@@ -44,8 +44,8 @@ const uploadToken = async (
             } else {
               notification
                 .findOneAndUpdate(
-                  { user: req.body.user },
-                  { token: req.body.token }
+                  { user: { $eq: req.body.user } },
+                  { token: { $eq: req.body.token } }
                 )
                 .exec()
                 .then((): void => {
