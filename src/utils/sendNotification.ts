@@ -20,14 +20,14 @@ const sendNotifications = async (
 
   const expo = new Expo();
   await rooms
-    .findOne({ id: room })
+    .findOne({ id: { $eq: room } })
     .then(async (returnedRoom: RoomSchemaType): Promise<void> => {
       await Promise.all(
         returnedRoom.users
           .filter((user: string): boolean => user !== data.user)
           .map(async (user: string): Promise<void> => {
             await notification
-              .findOne({ user: user })
+              .findOne({ user: { $eq: user } })
               .then((element: NotificationSchemaType): void => {
                 if (element !== null) {
                   tokens.push(element.token.toString());
