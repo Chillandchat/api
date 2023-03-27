@@ -24,7 +24,7 @@ const uploadToken = async (
   }
   try {
     await notification
-      .findOne({ user: req.body.user })
+      .findOne({ user: { $eq: req.body.user } })
       .exec()
       .then(
         async (notificationInstance: NotificationSchemaType): Promise<void> => {
