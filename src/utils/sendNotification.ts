@@ -7,9 +7,14 @@ import rooms from "../schema/roomSchema";
 import debug from "./debug";
 
 /**
+ * This is the send notifications function, this function will be responsible
+ * for sending a notification to the expo push server.
  *
- * @param room
- * @param data
+ * As mentioned in the expo documentation, the push server will send a native
+ * notification to the correspondent server such as Firebase.
+ *
+ * @param {string} room The room the message was sent in.
+ * @param {MessageSchemaType} data The message body or data.
  */
 
 const sendNotifications = async (
@@ -37,7 +42,6 @@ const sendNotifications = async (
       );
     });
 
-  console.log(tokens);
   for (let i: number = 0; i < tokens.length; i++) {
     if (!Expo.isExpoPushToken(tokens[i])) {
       debug.error(
@@ -51,14 +55,14 @@ const sendNotifications = async (
     ? await expo.sendPushNotificationsAsync([
         {
           to: tokens,
-          title: `${data.user.toString()} sent ${
-            data.content.includes("!IMG") ? "an image" : "a message"
-          } to you!`,
-          body: data.content.includes("!IMG")
-            ? ""
-            : data.content.includes("!FMT")
-            ? "<Chill&chat embed format>"
-            : data.content,
+          title: room.toString(),
+          body: `${data.user}: ${
+            data.content.includes("!FMT")
+              ? "<Formatted message>"
+              : data.content.includes("!IMG")
+              ? "<Embedded image>"
+              : data.content
+          }`,
           sound: "default",
           data: { message: data, "content-available": 1 },
         },
