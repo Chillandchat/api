@@ -36,45 +36,43 @@ const uploadContent = async (
         if (user === null) {
           res.status(400).send("ERROR: Non-existent user!");
           return;
-        } else {
-          const videoFormat: FileTypeResult | null | undefined =
-            req.body.type === "CHILL&CHAT_GIF"
-              ? await fromBuffer(Buffer.from(req.body.content, "base64"))
-              : null;
+        }
 
-          const fileType: string =
-            videoFormat !== null ? videoFormat.ext : "webp";
-          if (
-            !fs.existsSync(`${__dirname}/../../user-content/${req.body.user}`)
-          )
-            fs.mkdirSync(`${__dirname}/../../user-content/${req.body.user}`, {
-              recursive: true,
-            });
+        const uuid4Regex: RegExp =
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89aAbB][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-          fs.writeFileSync(
-            `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType}`,
-            req.body.type === "CHILL&CHAT_GIF"
-              ? Buffer.from(req.body.content, "base64")
-              : await sharp(Buffer.from(req.body.content, "base64"))
-                  .webp({ lossless: true })
-                  .toBuffer(),
-            "base64"
-          );
+        if (!uuid4Regex.test(req.body.id) || req.body.user.includes(" ")) {
+          res
+            .status(400)
+            .send("ERROR: Invalid input format, please correct format.");
+          return;
+        }
 
-          if (req.body.type === "CHILL&CHAT_GIF") {
-            const uuid4Regex: RegExp =
-              /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89aAbB][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        const videoFormat: FileTypeResult | null | undefined =
+          req.body.type === "CHILL&CHAT_GIF"
+            ? await fromBuffer(Buffer.from(req.body.content, "base64"))
+            : null;
 
-            if (!uuid4Regex.test(req.body.id) || req.body.user.includes(" ")) {
-              res
-                .status(400)
-                .send("ERROR: Invalid input format, please correct format.");
-              return;
-            }
+        const fileType: string =
+          videoFormat !== null ? videoFormat.ext : "webp";
+        if (!fs.existsSync(`${__dirname}/../../user-content/${req.body.user}`))
+          fs.mkdirSync(`${__dirname}/../../user-content/${req.body.user}`, {
+            recursive: true,
+          });
 
-            const command: string = `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24  -s 320x240 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`;
-            exec(command);
-          }
+        fs.writeFileSync(
+          `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType}`,
+          req.body.type === "CHILL&CHAT_GIF"
+            ? Buffer.from(req.body.content, "base64")
+            : await sharp(Buffer.from(req.body.content, "base64"))
+                .webp({ lossless: true })
+                .toBuffer(),
+          "base64"
+        );
+
+        if (req.body.type === "CHILL&CHAT_GIF") {
+          const command: string = `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24  -s 320x240 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`;
+          exec(command);
         }
       });
   } catch (err: unknown) {
