@@ -28,7 +28,10 @@ const uploadToken = async (
       .exec()
       .then(
         async (notificationInstance: NotificationSchemaType): Promise<void> => {
-          if (notificationInstance === null) {
+          if (
+            notificationInstance === null ||
+            notificationInstance.token !== req.body.token
+          ) {
             await new notification({
               user: req.body.user,
               token: req.body.token,
@@ -41,17 +44,6 @@ const uploadToken = async (
           } else {
             if (notificationInstance.token === req.body.token) {
               res.status(208).send("Token entry already uploaded.");
-            } else {
-              notification
-                .findOneAndUpdate(
-                  { user: { $eq: req.body.user } },
-                  { token: { $eq: req.body.token } }
-                )
-                .exec()
-                .then((): void => {
-                  debug.log("Updated notification entry.");
-                  res.status(200).send("Updated entry successfully.");
-                });
             }
           }
         }
