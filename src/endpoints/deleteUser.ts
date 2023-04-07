@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
+import notification from "../schema/notificationSchema";
 import { AuthSchemaType } from "../utils/index.d";
 import userSchema from "../schema/authSchema";
 import debug from "../utils/debug";
@@ -34,6 +35,14 @@ const deleteUser = async (
 
           return;
         }
+
+        await notification
+          .findOneAndDelete({ user: { $eq: req.body.user } })
+          .exec()
+          .then((): void => {
+            debug.log("Deleted notification entry.");
+          });
+
         await messages
           .deleteMany({ user: { $eq: req.body.user } })
           .exec()

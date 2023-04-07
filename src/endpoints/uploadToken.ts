@@ -43,14 +43,21 @@ const uploadToken = async (
                     notificationInstance === null ||
                     notificationInstance.token !== req.body.token
                   ) {
-                    await new notification({
-                      user: req.body.user,
-                      token: req.body.token,
-                    })
-                      .save()
-                      .then((): void => {
-                        debug.log("Saved new notification entry.");
-                        res.status(201).send("Created new notification entry.");
+                    await notification
+                      .findOneAndDelete({ user: { $eq: req.body.user } })
+                      .exec()
+                      .then(async (): Promise<void> => {
+                        await new notification({
+                          user: req.body.user,
+                          token: req.body.token,
+                        })
+                          .save()
+                          .then((): void => {
+                            debug.log("Saved new notification entry.");
+                            res
+                              .status(201)
+                              .send("Created new notification entry.");
+                          });
                       });
                   } else {
                     if (notificationInstance.token === req.body.token) {
