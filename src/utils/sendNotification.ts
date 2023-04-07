@@ -27,6 +27,7 @@ const sendNotifications = async (
   await rooms
     .findOne({ id: { $eq: room } })
     .then(async (returnedRoom: RoomSchemaType): Promise<void> => {
+      room = returnedRoom.name;
       await Promise.all(
         returnedRoom.users
           .filter((user: string): boolean => user !== data.user)
