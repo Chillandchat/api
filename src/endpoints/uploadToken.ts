@@ -28,32 +28,45 @@ const uploadToken = async (
       .exec()
       .then(
         async (notificationInstance: NotificationSchemaType): Promise<void> => {
-          if (notificationInstance === null) {
-            await new notification({
-              user: req.body.user,
-              token: req.body.token,
-            })
-              .save()
-              .then((): void => {
-                debug.log("Saved new notification entry.");
-                res.status(201).send("Created new notification entry.");
-              });
-          } else {
-            if (notificationInstance.token === req.body.token) {
-              res.status(208).send("Token entry already uploaded.");
-            } else {
-              notification
-                .findOneAndUpdate(
-                  { user: { $eq: req.body.user } },
-                  { token: { $eq: req.body.token } }
-                )
-                .exec()
-                .then((): void => {
-                  debug.log("Updated notification entry.");
-                  res.status(200).send("Updated entry successfully.");
-                });
-            }
-          }
+          notification
+            .findOne({ token: { $eq: req.body.token } })
+            .exec()
+            .then(
+              async (tokenInstance: NotificationSchemaType): Promise<void> => {
+                if (tokenInstance !== null) {
+                  if (tokenInstance.user !== req.body.user) {
+                    res.status(400).send("Token already in use.");
+                    return;
+                  }
+                } else {
+                  if (
+                    notificationInstance === null ||
+                    notificationInstance.token !== req.body.token
+                  ) {
+                    await notification
+                      .findOneAndDelete({ user: { $eq: req.body.user } })
+                      .exec()
+                      .then(async (): Promise<void> => {
+                        await new notification({
+                          user: req.body.user,
+                          token: req.body.token,
+                        })
+                          .save()
+                          .then((): void => {
+                            debug.log("Saved new notification entry.");
+                            res
+                              .status(201)
+                              .send("Created new notification entry.");
+                          });
+                      });
+                  } else {
+                    if (notificationInstance.token === req.body.token) {
+                      res.status(208).send("Token entry already uploaded.");
+                    }
+                  }
+                }
+              }
+            );
         }
       );
   } catch (err: unknown) {

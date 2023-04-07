@@ -21,53 +21,48 @@ const sendNotifications = async (
   room: string,
   data: MessageSchemaType
 ): Promise<void> => {
-  let tokens: Array<string> = [];
-
   const expo = new Expo();
+
   await rooms
     .findOne({ id: { $eq: room } })
+    .exec()
     .then(async (returnedRoom: RoomSchemaType): Promise<void> => {
-      await Promise.all(
-        returnedRoom.users
-          .filter((user: string): boolean => user !== data.user)
-          .map(async (user: string): Promise<void> => {
-            await notification
-              .findOne({ user: { $eq: user } })
-              .then((element: NotificationSchemaType): void => {
-                if (element !== null) {
-                  tokens.push(element.token.toString());
-                }
-              });
-          })
-      );
+      room = returnedRoom.name;
+
+      returnedRoom.users.map(async (user: string): Promise<void> => {
+        if (user !== data.user) {
+          await notification
+            .findOne({ user: { $eq: user } })
+            .exec()
+            .then((element: NotificationSchemaType): void => {
+              if (!element) return;
+
+              if (!Expo.isExpoPushToken(element.token)) {
+                debug.error(
+                  `${element.token} cannot be found as an exponent push notification key!`
+                );
+                return;
+              }
+
+              expo.sendPushNotificationsAsync([
+                {
+                  to: element.token,
+                  title: room.toString(),
+                  body: `${data.user}: ${
+                    data.content.includes("!FMT")
+                      ? "<Formatted message>"
+                      : data.content.includes("!IMG")
+                      ? "<Embedded image>"
+                      : data.content
+                  }`,
+                  sound: "default",
+                  data: { message: data, "content-available": 1 },
+                },
+              ]);
+            });
+        }
+      });
     });
-
-  for (let i: number = 0; i < tokens.length; i++) {
-    if (!Expo.isExpoPushToken(tokens[i])) {
-      debug.error(
-        `${tokens[i]} cannot be found as an exponent push notification key!`
-      );
-      return;
-    }
-  }
-
-  tokens.length > 0
-    ? await expo.sendPushNotificationsAsync([
-        {
-          to: tokens,
-          title: room.toString(),
-          body: `${data.user}: ${
-            data.content.includes("!FMT")
-              ? "<Formatted message>"
-              : data.content.includes("!IMG")
-              ? "<Embedded image>"
-              : data.content
-          }`,
-          sound: "default",
-          data: { message: data, "content-available": 1 },
-        },
-      ])
-    : undefined;
 };
 
 export default sendNotifications;
