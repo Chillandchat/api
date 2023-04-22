@@ -32,6 +32,8 @@ import { createServer } from "http";
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
+import http from "http";
+import https from "https";
 
 import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
@@ -81,12 +83,18 @@ const apiLimiter = rateLimit({
 dotenv.config();
 debug.init();
 
+http.globalAgent.maxSockets = Infinity;
+https.globalAgent.maxSockets = Infinity;
+
 connectDatabase();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(apiLimiter);
 
-app.use("/content", express.static(path.join(__dirname, "../user-content/")));
+app.use(
+  "/content",
+  express.static(path.join(__dirname, "../user-content/"), { maxAge: 31557600 })
+);
 
 app.get("/", home);
 app.post("/api/signup", signup);
