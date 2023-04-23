@@ -58,7 +58,7 @@ export const error = (content: string): void => {
 export const init = (): void => {
   if (!initialized) {
     console.log("Initializing debugger tools...");
-    
+
     if (!fs.existsSync("./log")) {
       fs.mkdirSync("./log");
     }
