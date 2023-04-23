@@ -9,7 +9,8 @@
   "scripts": {
     "start": "echo 'Starting app...' && ts-node ./src/index.ts",
     "create-bin": "echo 'Building binary files...' && pkg . && echo 'Done!'",
-    "build": "tsc && echo 'Building and compiling typescript code...\n' && echo 'Done.\n'"
+    "build": "tsc && echo 'Building and compiling typescript code...\n' && echo 'Done.\n'",
+    "format": "echo 'Formatting code...' && prettier --write . && echo 'Done!'"
   },
   "repository": {
     "type": "git",
