@@ -34,6 +34,7 @@ import path from "path";
 import dotenv from "dotenv";
 import http from "http";
 import https from "https";
+import compression from "compression";
 
 import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
@@ -95,6 +96,8 @@ app.use(
   "/content",
   express.static(path.join(__dirname, "../user-content/"), { maxAge: 31557600 })
 );
+
+app.use(compression());
 
 app.get("/", home);
 app.post("/api/signup", signup);
