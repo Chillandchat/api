@@ -41,6 +41,7 @@ DATABASE_URI= # Replace with MongoDB database URI.
 PORT= # Replace with port number.
 API_EMAIL= # Replace with email
 API_EMAIL_PASS= # Replace with email password
+GIPHY_KEY= # Replace with Giphy key
 
 ```
 
