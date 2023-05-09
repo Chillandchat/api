@@ -35,6 +35,7 @@ import dotenv from "dotenv";
 import http from "http";
 import https from "https";
 import compression from "compression";
+import NodeCache from "node-cache";
 
 import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
@@ -135,6 +136,9 @@ io.on("connection", (socket: Socket): void => {
     ): Promise<void> => {
       if (key === process.env.KEY) {
         await sendNotifications(payload.room, payload);
+
+        const cache = new NodeCache();
+        const chachedMessages: string = cache.get(`message:(${payload.room})`);
 
         io.emit(`client-message:room(${payload.room})`, payload);
         const newMessage = new message({
