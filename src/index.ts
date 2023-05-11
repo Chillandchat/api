@@ -75,6 +75,8 @@ const io = new Server(httpServer);
 
 const PORT: number = Number(process.env.PORT) || 3000;
 
+export const messageCache = new NodeCache();
+
 const apiLimiter = rateLimit({
   windowMs: 1 * 30 * 1000,
   max: 100,
@@ -137,19 +139,31 @@ io.on("connection", (socket: Socket): void => {
       if (key === process.env.KEY) {
         await sendNotifications(payload.room, payload);
 
-        const cache = new NodeCache();
-        const chachedMessages: string = cache.get(`message:(${payload.room})`);
-
-        io.emit(`client-message:room(${payload.room})`, payload);
-        const newMessage = new message({
+        const messageObject: Object = {
           id: payload.id,
           user: payload.user,
           content: payload.content,
           room: payload.room,
-        });
+        };
+
+        io.emit(`client-message:room(${payload.room})`, payload);
+        const newMessage = new message(messageObject);
         await newMessage
           .save()
-          .then((): void => {
+          .then((createdMessage: MessageSchemaType): void => {
+            if (messageCache.get(payload.room) !== undefined) {
+              messageCache.set(
+                payload.room,
+                // @ts-ignore
+                messageCache.get(payload.room)?.concat(createdMessage)
+              );
+            } else {
+              message
+                .find({ room: { $eq: payload.room } })
+                .then((messages: Array<MessageSchemaType>): void => {
+                  messageCache.set(payload.room, messages);
+                });
+            }
             io.emit(`sent:token(${responseToken})`);
             debug.log(`Message: ${payload.id} saved and emitted.`);
           })
@@ -193,6 +207,9 @@ io.on("connection", (socket: Socket): void => {
       key: string
     ): Promise<void> => {
       if (key === process.env.KEY) {
+        const cachedMessage: Array<MessageSchemaType> | undefined =
+          messageCache.get(room);
+
         await message
           .findOne({ id: { $eq: id } })
           .then(async (messageData: MessageSchemaType): Promise<void> => {
@@ -218,7 +235,23 @@ io.on("connection", (socket: Socket): void => {
 
             await message
               .findOneAndDelete({ id: { $eq: id } })
-              .then((): void => {
+              .then((deletedMessage: MessageSchemaType): void => {
+                if (cachedMessage !== undefined) {
+                  messageCache.set(
+                    room,
+                    cachedMessage.splice(
+                      cachedMessage.indexOf(deletedMessage),
+                      1
+                    )
+                  );
+                } else {
+                  message
+                    .find({ room: { $eq: room } })
+                    .then((messages: Array<MessageSchemaType>): void => {
+                      messageCache.set(room, messages);
+                    });
+                }
+
                 io.emit(`client-message-delete:room(${room})`, id);
                 io.emit(`deleted:token(${responseToken})`);
                 debug.log(`Deleted message ${id}`);
