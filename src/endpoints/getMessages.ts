@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { MessageSchemaType } from "../utils";
 import debug from "../utils/debug";
 import message from "../schema/messageSchema";
+import { messageCache } from "..";
 
 /**
  * This is the get message endpoint, this endpoint is used to get messages in the database.
@@ -23,13 +24,19 @@ const getMessages = async (
   }
 
   try {
+    if (messageCache.get(String(req.query.room)) !== undefined) {
+      res.status(200).send(messageCache.get(String(req.query.room)));
+      debug.log("Found messages in cache.");
+      return;
+    }
+
     await message
       .find({ room: { $eq: req.query.room } })
       .exec()
       .then((data: Array<MessageSchemaType>): void => {
         res.status(200).send(data);
-
-        debug.log("Found messages.");
+        messageCache.set(String(req.query.room), data);
+        debug.log("Found messages and added to cache.");
       });
   } catch (err: unknown) {
     res.status(500).send(err);
