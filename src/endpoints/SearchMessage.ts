@@ -13,7 +13,7 @@ import { messageCache } from "..";
  * @returns {string | MessageSchemaType} Returns the result of the search in a string format or the message in the message schema type.
  */
 
-const seachMessage = async (
+const searchMessage = async (
   req: Request,
   res: Response,
   _next: NextFunction
@@ -53,4 +53,4 @@ const seachMessage = async (
   }
 };
 
-export default seachMessage;
+export default searchMessage;
