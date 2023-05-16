@@ -240,7 +240,6 @@ io.on("connection", (socket: Socket): void => {
                   .find({ room: { $eq: room } })
                   .then((messages: Array<MessageSchemaType>): void => {
                     messageCache.set(room, messages);
-                    debugger;
                   });
 
                 io.emit(`client-message-delete:room(${room})`, id);
