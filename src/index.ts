@@ -235,22 +235,13 @@ io.on("connection", (socket: Socket): void => {
 
             await message
               .findOneAndDelete({ id: { $eq: id } })
-              .then((deletedMessage: MessageSchemaType): void => {
-                if (cachedMessage !== undefined) {
-                  messageCache.set(
-                    room,
-                    cachedMessage.splice(
-                      cachedMessage.indexOf(deletedMessage),
-                      1
-                    )
-                  );
-                } else {
-                  message
-                    .find({ room: { $eq: room } })
-                    .then((messages: Array<MessageSchemaType>): void => {
-                      messageCache.set(room, messages);
-                    });
-                }
+              .then((): void => {
+                message
+                  .find({ room: { $eq: room } })
+                  .then((messages: Array<MessageSchemaType>): void => {
+                    messageCache.set(room, messages);
+                    debugger;
+                  });
 
                 io.emit(`client-message-delete:room(${room})`, id);
                 io.emit(`deleted:token(${responseToken})`);
