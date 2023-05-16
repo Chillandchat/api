@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import messageSchema from "../schema/messageSchema";
 import { MessageSchemaType } from "../utils";
 import debug from "../utils/debug";
+import { messageCache } from "..";
 
 /**
  * This is the search message endpoint, this endpoint will retrun a message of the given id.
@@ -23,6 +24,18 @@ const seachMessage = async (
   }
 
   try {
+    if (messageCache.get(String(req.body.id)) !== undefined) {
+      const result: MessageSchemaType = messageCache
+        .get(String(req.body.id))
+        // @ts-ignore
+        ?.find(
+          (message: MessageSchemaType) => message.id === req.body.id
+        ) as MessageSchemaType;
+      res.status(200).send(result);
+      debug.log(`Message ${req.body.id} has been found in cache.`);
+      return;
+    }
+
     await messageSchema
       .findOne({ id: { $eq: req.body.id } })
       .then((data: MessageSchemaType | null | undefined) => {
