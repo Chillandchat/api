@@ -32,8 +32,6 @@ import { createServer } from "http";
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
-import http from "http";
-import https from "https";
 import compression from "compression";
 import NodeCache from "node-cache";
 
