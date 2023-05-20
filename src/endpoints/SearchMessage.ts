@@ -6,7 +6,7 @@ import debug from "../utils/debug";
 import { messageCache } from "..";
 
 /**
- * This is the search message endpoint, this endpoint will retrun a message of the given id.
+ * This is the search message endpoint, this endpoint will return a message of the given id.
  *
  * @type {POST} This is a post typed endpoint.
  * @param {string} id The id of the message that is being searched for.
