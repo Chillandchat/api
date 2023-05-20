@@ -67,6 +67,7 @@ import sendNotifications from "./utils/sendNotification";
 import uploadToken from "./endpoints/uploadToken";
 import deleteMessage from "./sockets/deleteMessage";
 import keyboard from "./sockets/keyboard";
+import notFound from "./endpoints/notFound";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -133,13 +134,6 @@ io.on("connection", (socket: Socket): void => {
   socket.on("server-message-delete", deleteMessage);
 });
 
-const notFound = (_req: any, res: any, _next: any): void => {
-  res
-    .status(404)
-    .send(
-      "REQUEST ERROR: The page you requested was not found, please type a valid URL."
-    );
-};
 app.use(notFound);
 
 httpServer.listen(PORT, (): void => {
