@@ -73,34 +73,27 @@ const app: express.Express = express();
 const httpServer: any = createServer(app);
 export const io = new Server(httpServer);
 
-const PORT: number = Number(process.env.PORT) || 3000;
-
 export const messageCache = new NodeCache();
-
-const apiLimiter = rateLimit({
-  windowMs: 1 * 30 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
 dotenv.config();
 debug.init();
-
-http.globalAgent.maxSockets = Infinity;
-https.globalAgent.maxSockets = Infinity;
-
 connectDatabase();
 
+app.use(compression());
 app.use(express.json({ limit: "10mb" }));
-app.use(apiLimiter);
+app.use(
+  rateLimit({
+    windowMs: 1 * 30 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
 
 app.use(
   "/content",
   express.static(path.join(__dirname, "../user-content/"), { maxAge: 31557600 })
 );
-
-app.use(compression());
 
 app.get("/", home);
 app.post("/api/signup", signup);
@@ -135,6 +128,8 @@ io.on("connection", (socket: Socket): void => {
 });
 
 app.use(notFound);
+
+const PORT: number = Number(process.env.PORT) || 3000;
 
 httpServer.listen(PORT, (): void => {
   debug.log(`Server listening on port ${PORT}`);
