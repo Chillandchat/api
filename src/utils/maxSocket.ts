@@ -1,5 +1,10 @@
 import https from "https";
 import http from "http";
 
-http.globalAgent.maxSockets = Infinity;
-https.globalAgent.maxSockets = Infinity;
+process.env.NODE_ENV == "production"
+  ? (http.globalAgent.maxSockets = Infinity)
+  : null;
+
+process.env.NODE_ENV == "production"
+  ? (https.globalAgent.maxSockets = Infinity)
+  : null;
