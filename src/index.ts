@@ -32,12 +32,9 @@ import { createServer } from "http";
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
-import http from "http";
-import https from "https";
 import compression from "compression";
 import NodeCache from "node-cache";
 
-import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
 import getMessages from "./endpoints/getMessages";
 import signup from "./endpoints/signup";
@@ -52,7 +49,6 @@ import rateLimit from "express-rate-limit";
 import joinRoom from "./endpoints/joinRoom";
 import searchMessage from "./endpoints/SearchMessage";
 import debug from "./utils/debug";
-import message from "./schema/messageSchema";
 import reportRoom from "./endpoints/reportRoom";
 import removeRoom from "./endpoints/removeRoom";
 import unfollowUser from "./endpoints/unfollowuser";
@@ -61,46 +57,41 @@ import updateDescription from "./endpoints/updateDescription";
 import updateIconColor from "./endpoints/updateIconColor";
 import getPublicRooms from "./endpoints/getPublicRooms";
 import uploadContent from "./endpoints/uploadContent";
-import content from "./schema/contentSchema";
 import connectDatabase from "./utils/connectDatabase";
 import getGif from "./endpoints/getGif";
 import deleteUser from "./endpoints/deleteUser";
 import verifyClient from "./endpoints/verifyClient";
 import sendNotifications from "./utils/sendNotification";
 import uploadToken from "./endpoints/uploadToken";
+import deleteMessage from "./sockets/deleteMessage";
+import keyboard from "./sockets/keyboard";
+import notFound from "./endpoints/notFound";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
-const io = new Server(httpServer);
-
-const PORT: number = Number(process.env.PORT) || 3000;
+export const io = new Server(httpServer);
 
 export const messageCache = new NodeCache();
 
-const apiLimiter = rateLimit({
-  windowMs: 1 * 30 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 dotenv.config();
 debug.init();
-
-http.globalAgent.maxSockets = Infinity;
-https.globalAgent.maxSockets = Infinity;
-
 connectDatabase();
 
+app.use(compression());
 app.use(express.json({ limit: "10mb" }));
-app.use(apiLimiter);
+app.use(
+  rateLimit({
+    windowMs: 1 * 30 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
 
 app.use(
   "/content",
   express.static(path.join(__dirname, "../user-content/"), { maxAge: 31557600 })
 );
-
-app.use(compression());
 
 app.get("/", home);
 app.post("/api/signup", signup);
@@ -129,143 +120,14 @@ app.post("/api/upload-token", uploadToken);
 
 // Socket server:
 io.on("connection", (socket: Socket): void => {
-  socket.on(
-    "server-message",
-    async (
-      payload: MessageSchemaType,
-      key: string,
-      responseToken: string
-    ): Promise<void> => {
-      if (key === process.env.KEY) {
-        await sendNotifications(payload.room, payload);
-
-        const messageObject: Object = {
-          id: payload.id,
-          user: payload.user,
-          content: payload.content,
-          room: payload.room,
-        };
-
-        io.emit(`client-message:room(${payload.room})`, payload);
-        const newMessage = new message(messageObject);
-        await newMessage
-          .save()
-          .then((createdMessage: MessageSchemaType): void => {
-            if (messageCache.get(payload.room) !== undefined) {
-              messageCache.set(
-                payload.room,
-                // @ts-ignore
-                messageCache.get(payload.room)?.concat(createdMessage)
-              );
-            } else {
-              message
-                .find({ room: { $eq: payload.room } })
-                .then((messages: Array<MessageSchemaType>): void => {
-                  messageCache.set(payload.room, messages);
-                });
-            }
-            io.emit(`sent:token(${responseToken})`);
-            debug.log(`Message: ${payload.id} saved and emitted.`);
-          })
-          .catch((err: unknown): void => {
-            io.emit(`error:token(${responseToken})`, err);
-          });
-      } else {
-        io.emit(`error:token(${responseToken})`, "Invalid key");
-      }
-    }
-  );
-
-  socket.on(
-    "server-keyboard",
-    (
-      room: string,
-      user: string,
-      key: string,
-      responseToken: string,
-      mode: "start" | "stop"
-    ): void => {
-      if (key === process.env.KEY) {
-        if (mode === "start") {
-          debug.log(`${user} is now typing.`);
-          io.emit(`typing:token(${responseToken})`);
-        } else {
-          debug.log(`${user} is now stopped typing`);
-          io.emit(`stopped-typing:token(${responseToken})`);
-        }
-        io.emit(`keyboard-${mode}:room(${room})`, user);
-      } else io.emit(`error:token(${responseToken})`, "Invalid key");
-    }
-  );
-
-  socket.on(
-    "server-message-delete",
-    async (
-      id: string,
-      room: string,
-      responseToken: string,
-      key: string
-    ): Promise<void> => {
-      if (key === process.env.KEY) {
-        const cachedMessage: Array<MessageSchemaType> | undefined =
-          messageCache.get(room);
-
-        await message
-          .findOne({ id: { $eq: id } })
-          .then(async (messageData: MessageSchemaType): Promise<void> => {
-            if (
-              await content.exists({
-                url: {
-                  $eq: messageData.content.slice(
-                    3,
-                    messageData.content.length - 1
-                  ),
-                },
-              })
-            ) {
-              await content.findOneAndDelete({
-                url: {
-                  $eq: messageData.content.slice(
-                    3,
-                    messageData.content.length - 1
-                  ),
-                },
-              });
-            }
-
-            await message
-              .findOneAndDelete({ id: { $eq: id } })
-              .then((): void => {
-                message
-                  .find({ room: { $eq: room } })
-                  .then((messages: Array<MessageSchemaType>): void => {
-                    messageCache.set(room, messages);
-                  });
-
-                io.emit(`client-message-delete:room(${room})`, id);
-                io.emit(`deleted:token(${responseToken})`);
-                debug.log(`Deleted message ${id}`);
-              })
-              .catch((err: unknown): void => {
-                io.emit(`error:token(${responseToken})`, err);
-              });
-          })
-          .catch((err: unknown): void => {
-            io.emit(`error:token(${responseToken})`, err);
-          });
-      } else io.emit(`error:token(${responseToken})`, "Invalid key");
-    }
-  );
+  socket.on("server-message", sendNotifications);
+  socket.on("server-keyboard", keyboard);
+  socket.on("server-message-delete", deleteMessage);
 });
 
-const notFound = (_req: any, res: any, _next: any): void => {
-  res
-    .status(404)
-    .send(
-      "REQUEST ERROR: The page you requested was not found, please type a valid URL."
-    );
-};
 app.use(notFound);
+
+const PORT: number = Number(process.env.PORT) || 3000;
 
 httpServer.listen(PORT, (): void => {
   debug.log(`Server listening on port ${PORT}`);
