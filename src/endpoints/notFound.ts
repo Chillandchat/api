@@ -1,6 +1,8 @@
 /**
- * This function is the middleware used to handle the 404 error.
+ * This is the not found page for the CHill&chat API, this endpoint will send an
+ * error message to the client-side user, to inform no fetched page was found.
  *
+ * @type {GET} This is a get typed endpoint.
  * @note No parameters are required.
  */
 
