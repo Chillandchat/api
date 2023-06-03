@@ -59,7 +59,7 @@ import followUser from "./endpoints/followUser";
 import updateDescription from "./endpoints/updateDescription";
 import updateIconColor from "./endpoints/updateIconColor";
 import getPublicRooms from "./endpoints/getPublicRooms";
-import uploadContent from "./endpoints/uploadContent";
+import legacyUploadContent from "./endpoints/legacyUploadContent";
 import content from "./schema/contentSchema";
 import connectDatabase from "./utils/connectDatabase";
 import getGif from "./endpoints/getGif";
@@ -90,7 +90,23 @@ https.globalAgent.maxSockets = Infinity;
 connectDatabase();
 
 app.use(express.json({ limit: "10mb" }));
-app.use(apiLimiter);
+
+app.use(
+  "/api/upload-content",
+  express.raw({
+    type: "application/octet-stream",
+    limit: "50mb",
+  })
+);
+
+app.use(
+  rateLimit({
+    windowMs: 1 * 30 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
 
 app.use(
   "/content",
@@ -100,31 +116,34 @@ app.use(
 app.use(compression());
 
 app.get("/", home);
-app.post("/api/signup", signup);
+app.get("/site-map", siteMap);
+
 app.post("/api/login", login);
 app.get("/api/get-messages", getMessages);
-app.get("/site-map", siteMap);
-app.get("/api/get-users", getUsers); // Deprecated.
 app.get("/api/get-user-info", getUserInfo);
 app.get("/api/get-rooms", getAllRooms);
 app.get("/api/verify-client", verifyClient);
 app.get("/api/get-gif", getGif);
 app.get("/api/get-public-rooms", getPublicRooms);
+
 app.post("/api/delete-user", deleteUser);
 app.post("/api/search-message", searchMessage);
 app.post("/api/block_user", blockUser);
-app.post("/api/upload-content", uploadContent);
 app.post("/api/create-room", createRoom);
 app.post("/api/join-room", joinRoom);
 app.post("/api/report-room", reportRoom);
 app.post("/api/remove-room", removeRoom);
 app.post("/api/unfollow-user", unfollowUser);
+app.post("/api/signup", signup);
 app.post("/api/follow-user", followUser);
 app.post("/api/update-description", updateDescription);
 app.post("/api/update-icon-color", updateIconColor);
 app.post("/api/upload-token", uploadToken);
 
-// Socket server:
+/** ---------------------- @deprecated ---------------------- */
+app.get("/legacy-endpoints/get-users", getUsers);
+app.post("/legacy-endpoints/upload-content", legacyUploadContent);
+
 io.on("connection", (socket: Socket): void => {
   socket.on(
     "server-message",
