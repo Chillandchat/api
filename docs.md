@@ -1,3 +1,6 @@
+### 🚨 Deprecation warning 🚨
+Please note that this documentation is now **OUT OF DATE** and **DEPRECATED** after 21/8/2021. This means that this documentation will **NOT** Bbe updted and some content may **NOT** be **VALID**. For a safer and better documentation that is actually up to date, please use: https://github.com/Chillandchat/api/commits/master?before=839c8611480fd82b5b23a0cc70aafcba371ee31b+170&branch=master&qualified_name=refs%2Fheads%2Fmaster instead.
+
 <p align="center"how><img src="https://github.com/Chillandchat/api/blob/master/logo.svg/" style="width:200px;"/></p>
 
 # Chill&chat API documentation
