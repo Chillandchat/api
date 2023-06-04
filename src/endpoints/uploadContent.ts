@@ -80,7 +80,7 @@ const uploadContent = async (
         debug.log(
           `Successfully saved upload item: /user-content/${req.query.user}/${
             req.query.id
-          }.${req.body.query === "CHILL&CHAT_IMG" ? "webp" : "mp4"}`
+          }.${req.body.query === "CHILL&CHAT_IMG" ? "webp" : "gif"}`
         );
       });
   } catch (err: unknown) {
