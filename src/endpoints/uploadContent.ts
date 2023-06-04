@@ -1,22 +1,11 @@
-import { NextFunction, Request, Response } from "express";
-import fs from "fs";
 import sharp from "sharp";
 import { exec } from "child_process";
-import { FileTypeResult, fromBuffer } from "file-type";
+import { NextFunction, Request, Response } from "express";
+import fs from "fs";
 
-import debug from "../utils/debug";
 import user from "../schema/authSchema";
 import { AuthSchemaType } from "../utils";
-
-/**
- * This is the upload content endpoint, this endpoint will save the content in the server.
- *
- * @type {POST} This is a POST typed endpoint.
- * @param {string} id The id of the content.
- * @param {string} content The content of the file.
- * @param {ContentType} type The type of the file.
- * @param {string} user The user who uploaded this content.
- */
+import debug from "../utils/debug";
 
 const uploadContent = async (
   req: Request,
@@ -29,8 +18,13 @@ const uploadContent = async (
   }
 
   try {
+    if (req.query.useBinaryUploadEndpoint !== "true") {
+      res.redirect(300, "/legacy-endpoints/upload-content");
+      return;
+    }
+
     await user
-      .findOne({ username: { $eq: req.body.user } })
+      .findOne({ username: { $eq: req.query.user } })
       .exec()
       .then(async (user: AuthSchemaType): Promise<void> => {
         if (user === null) {
@@ -41,39 +35,53 @@ const uploadContent = async (
         const uuid4Regex: RegExp =
           /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89aAbB][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-        if (!uuid4Regex.test(req.body.id) || req.body.user.includes(" ")) {
+        if (
+          !uuid4Regex.test(req.query.id.toString()) ||
+          req.query.user.toString().includes(" ")
+        ) {
           res
             .status(400)
             .send("ERROR: Invalid input format, please correct format.");
           return;
         }
 
-        const videoFormat: FileTypeResult | null | undefined =
-          req.body.type === "CHILL&CHAT_GIF"
-            ? await fromBuffer(Buffer.from(req.body.content, "base64"))
-            : null;
+        switch (req.query.type) {
+          case "CHILL&CHAT_IMG":
+            fs.writeFileSync(
+              `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.webp`,
+              await sharp(req.body).webp({ lossless: true }).toBuffer()
+            );
+            break;
 
-        const fileType: string =
-          videoFormat !== null ? videoFormat.ext : "webp";
-        if (!fs.existsSync(`${__dirname}/../../user-content/${req.body.user}`))
-          fs.mkdirSync(`${__dirname}/../../user-content/${req.body.user}`, {
-            recursive: true,
-          });
+          case "CHILL&CHAT_GIF":
+            fs.writeFileSync(
+              `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.mp4`,
+              req.body
+            );
 
-        fs.writeFileSync(
-          `${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType}`,
-          req.body.type === "CHILL&CHAT_GIF"
-            ? Buffer.from(req.body.content, "base64")
-            : await sharp(Buffer.from(req.body.content, "base64"))
-                .webp({ lossless: true })
-                .toBuffer(),
-          "base64"
-        );
+            const command: string = `ffmpeg -i ${__dirname}/../../user-content/${req.query.user}/${req.query.id}.mp4 -pix_fmt rgb8 ${__dirname}/../../user-content/${req.query.user}/${req.query.id}.gif`;
+            exec(command, (_err: unknown): void => {
+              fs.unlinkSync(
+                `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.mp4`
+              );
+            });
+            break;
 
-        if (req.body.type === "CHILL&CHAT_GIF") {
-          const command: string = `ffmpeg -ss 00:00:00.000 -i ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.${fileType} -pix_fmt rgb24  -s 320x240 -r 10 -t 00:00:10.000 ${__dirname}/../../user-content/${req.body.user}/${req.body.id}.gif`;
-          exec(command);
+          default:
+            res
+              .status(400)
+              .send(
+                "ERROR: Invalid file type, please provide correct file type."
+              );
+            return;
         }
+
+        res.status(201).send("Successfully saved file.");
+        debug.log(
+          `Successfully saved upload item: /user-content/${req.query.user}/${
+            req.query.id
+          }.${req.body.query === "CHILL&CHAT_IMG" ? "webp" : "mp4"}`
+        );
       });
   } catch (err: unknown) {
     res.status(500).send(`SERVER ERROR: ${err}`);

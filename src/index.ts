@@ -67,6 +67,7 @@ import deleteUser from "./endpoints/deleteUser";
 import verifyClient from "./endpoints/verifyClient";
 import sendNotifications from "./utils/sendNotification";
 import uploadToken from "./endpoints/uploadToken";
+import uploadContent from "./endpoints/uploadContent";
 
 const app: express.Express = express();
 const httpServer: any = createServer(app);
@@ -90,14 +91,6 @@ https.globalAgent.maxSockets = Infinity;
 connectDatabase();
 
 app.use(express.json({ limit: "10mb" }));
-
-app.use(
-  "/api/upload-content",
-  express.raw({
-    type: "application/octet-stream",
-    limit: "50mb",
-  })
-);
 
 app.use(
   rateLimit({
@@ -139,6 +132,7 @@ app.post("/api/follow-user", followUser);
 app.post("/api/update-description", updateDescription);
 app.post("/api/update-icon-color", updateIconColor);
 app.post("/api/upload-token", uploadToken);
+app.post("/api/upload-content", express.raw({ limit: "100mb" }), uploadContent);
 
 /** ---------------------- @deprecated ---------------------- */
 app.get("/legacy-endpoints/get-users", getUsers);
