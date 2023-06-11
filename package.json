@@ -28,6 +28,7 @@
     "node-fetch": "2.6.7",
     "nodemailer": "^6.7.3",
     "randomcolor": "^0.6.2",
+    "sanitize-filename": "^1.6.3",
     "sharp": "^0.31.2",
     "socket.io": "^4.4.1",
     "ts-node": "^10.7.0"
