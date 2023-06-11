@@ -1,11 +1,16 @@
+// TODO: Fix upload
+
 import sharp from "sharp";
 import { exec } from "child_process";
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
+import isHeic from "is-heic";
+import convert from "heic-convert";
 
 import user from "../schema/authSchema";
 import { AuthSchemaType } from "../utils";
 import debug from "../utils/debug";
+import sanitizeDirectory from "../utils/sanitizeDirectory";
 
 const uploadContent = async (
   req: Request,
@@ -32,37 +37,56 @@ const uploadContent = async (
           return;
         }
 
-        const uuid4Regex: RegExp =
-          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89aAbB][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        let path: any;
+        const fileExtension: string =
+          req.query.type === "CHILL&CHAT_IMG" ? "webp" : "gif";
 
-        if (
-          !uuid4Regex.test(req.query.id.toString()) ||
-          req.query.user.toString().includes(" ")
-        ) {
-          res
-            .status(400)
-            .send("ERROR: Invalid input format, please correct format.");
+        await sanitizeDirectory(
+          `${req.query.user}/${req.query.id}.${fileExtension}`
+        )
+          .then((cleanPath: any): void => (path = cleanPath.fullPath))
+          .catch((err): Response => res.status(403).send(err));
+
+        if (path === undefined) return;
+
+        if (fs.existsSync(`${__dirname}/../../user-content/${path}`)) {
+          res.status(400).send("ERROR: File already exists!");
           return;
         }
 
         switch (req.query.type) {
           case "CHILL&CHAT_IMG":
+            const heic: boolean = req.body
+              .slice(0, 16)
+              .toString("utf-8")
+              .includes("heic");
+
+            const buffer: any = !heic
+              ? req.body
+              : await convert({
+                  buffer: req.body,
+                  format: "JPEG",
+                  quality: 1,
+                });
+
             fs.writeFileSync(
-              `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.webp`,
-              await sharp(req.body).webp({ lossless: true }).toBuffer()
+              `${__dirname}/../../user-content/${path}`,
+              await sharp(buffer).webp({ lossless: true }).toBuffer()
             );
             break;
 
           case "CHILL&CHAT_GIF":
             fs.writeFileSync(
-              `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.mp4`,
+              `${__dirname}/../../user-content/${path.slice(path.length - 4)}`,
               req.body
             );
 
-            const command: string = `ffmpeg -i ${__dirname}/../../user-content/${req.query.user}/${req.query.id}.mp4 -pix_fmt rgb8 ${__dirname}/../../user-content/${req.query.user}/${req.query.id}.gif`;
+            const command: string = `ffmpeg -i ${__dirname}/../../user-content/${path.slice(
+              path.length - 4
+            )} -pix_fmt rgb8 ${__dirname}/../../user-content/${path}`;
             exec(command, (_err: unknown): void => {
               fs.unlinkSync(
-                `${__dirname}/../../user-content/${req.query.user}/${req.query.id}.mp4`
+                `${__dirname}/../../user-content/${path.slice(path.length - 4)}`
               );
             });
             break;
@@ -77,11 +101,7 @@ const uploadContent = async (
         }
 
         res.status(201).send("Successfully saved file.");
-        debug.log(
-          `Successfully saved upload item: /user-content/${req.query.user}/${
-            req.query.id
-          }.${req.body.query === "CHILL&CHAT_IMG" ? "webp" : "gif"}`
-        );
+        debug.log(`Successfully saved upload item: /user-content/${path}`);
       });
   } catch (err: unknown) {
     res.status(500).send(`SERVER ERROR: ${err}`);
