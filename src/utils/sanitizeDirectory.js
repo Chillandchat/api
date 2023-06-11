@@ -6,7 +6,7 @@
 import sanitize from "sanitize-filename";
 
 async function sanitizeDirectory(inputDirectory) {
-  const regex = /^(.*\/)?(.+)\.(\w+)$/;
+  const regex = /^(.*\/)?([\w-]+)\.(\w+)$/;
   let [fullPath, directory, fileName, extension] = regex.exec(inputDirectory);
 
   fileName = sanitize(fileName);
