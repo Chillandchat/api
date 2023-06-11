@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import debug from "../utils/debug";
-import sanitizeDirectory from "../utils/sanitiseDirectory";
+import sanitizeDirectory from "../utils/sanitizeDirectory";
 
 /**
  * This is the content endpoint, this endpoint will send the content to the user once called.
