@@ -30,12 +30,12 @@
 import { Server, Socket } from "socket.io";
 import { createServer } from "http";
 import express from "express";
-import path from "path";
 import dotenv from "dotenv";
 import http from "http";
 import https from "https";
 import compression from "compression";
 
+import contentEndpoint from "./endpoints/content";
 import { MessageSchemaType } from "./utils";
 import home from "./endpoints/home";
 import getMessages from "./endpoints/getMessages";
@@ -101,11 +101,6 @@ app.use(
   })
 );
 
-app.use(
-  "/content",
-  express.static(path.join(__dirname, "../user-content/"), { maxAge: 31557600 })
-);
-
 app.use(compression());
 
 app.get("/", home);
@@ -118,6 +113,7 @@ app.get("/api/get-rooms", getAllRooms);
 app.get("/api/verify-client", verifyClient);
 app.get("/api/get-gif", getGif);
 app.get("/api/get-public-rooms", getPublicRooms);
+app.get("/content/:path", contentEndpoint);
 
 app.post("/api/delete-user", deleteUser);
 app.post("/api/search-message", searchMessage);
