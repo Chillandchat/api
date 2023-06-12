@@ -4,7 +4,6 @@ import sharp from "sharp";
 import { exec } from "child_process";
 import { NextFunction, Request, Response } from "express";
 import fs from "fs";
-import isHeic from "is-heic";
 import convert from "heic-convert";
 
 import user from "../schema/authSchema";
