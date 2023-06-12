@@ -1,5 +1,3 @@
-// TODO: Fix upload
-
 import sharp from "sharp";
 import { exec } from "child_process";
 import { NextFunction, Request, Response } from "express";
