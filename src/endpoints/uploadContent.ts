@@ -53,6 +53,11 @@ const uploadContent = async (
           return;
         }
 
+        if (req.headers["content-type"] !== "application/octet-stream") {
+          res.status(400).send("ERROR: Invalid content type.");
+          return;
+        }
+
         switch (req.query.type) {
           case "CHILL&CHAT_IMG":
             const heic: boolean = req.body
