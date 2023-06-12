@@ -14,14 +14,14 @@ import sanitizeDirectory from "../utils/sanitizeDirectory";
 
 const content = (req: Request, res: Response, _next: NextFunction): void => {
   try {
-    sanitizeDirectory(req.params.path)
+    sanitizeDirectory(req.url.slice(8))
       .then((cleanPath: any): void => {
-        res
-          .status(200)
-          .sendFile(`${__dirname}/../user-content/${cleanPath.fullPath}}`);
-        debug.log(`Content: ${req.params.path} sent.`);
+        res.status(200).sendFile(cleanPath.fullPath, {
+          root: `${__dirname}/../../user-content`,
+        });
+        debug.log(`Content: ${cleanPath.fullPath} sent.`);
       })
-      .catch((err): Response => res.status(403).send(err));
+      .catch((err): Response => res.status(403).send(err.toString()));
   } catch (err: unknown) {
     res.status(500).send(err);
     debug.error(err);
