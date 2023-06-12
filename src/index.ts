@@ -113,7 +113,7 @@ app.get("/api/get-rooms", getAllRooms);
 app.get("/api/verify-client", verifyClient);
 app.get("/api/get-gif", getGif);
 app.get("/api/get-public-rooms", getPublicRooms);
-app.get("/content/:path", contentEndpoint);
+app.get("/content*/", contentEndpoint);
 
 app.post("/api/delete-user", deleteUser);
 app.post("/api/search-message", searchMessage);
