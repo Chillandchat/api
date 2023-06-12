@@ -1665,11 +1665,6 @@ is-glob@^4.0.1, is-glob@~4.0.1:
   dependencies:
     is-extglob "^2.1.1"
 
-is-heic@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/is-heic/-/is-heic-1.0.0.tgz#7a4ff6354e4c6f9d2b82c9dc9342623923881ade"
-  integrity sha512-Gv1kL52p7bQhUS+qTJDsGsiKalc1mf/p0buzdkmk4/f9UwUvxn7VUS/PW2wlI3UR+QvnNO1e3ubbo0964z355Q==
-
 is-number@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
