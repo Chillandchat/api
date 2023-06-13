@@ -32,7 +32,6 @@ import { createServer } from "http";
 import express from "express";
 import dotenv from "dotenv";
 import compression from "compression";
-import NodeCache from "node-cache";
 
 import contentEndpoint from "./endpoints/content";
 import home from "./endpoints/home";
@@ -57,7 +56,6 @@ import updateDescription from "./endpoints/updateDescription";
 import updateIconColor from "./endpoints/updateIconColor";
 import getPublicRooms from "./endpoints/getPublicRooms";
 import legacyUploadContent from "./endpoints/legacyUploadContent";
-import content from "./schema/contentSchema";
 import connectDatabase from "./utils/connectDatabase";
 import getGif from "./endpoints/getGif";
 import deleteUser from "./endpoints/deleteUser";
