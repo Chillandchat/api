@@ -1,6 +1,6 @@
 {
   "name": "@chillandchat/api",
-  "version": "1.11.3",
+  "version": "1.11.5",
   "main": "./build/js/index.js",
   "bin": "./build/js/index.js",
   "author": "Alvin cheng <eventide1029@gmail.com>",
@@ -24,11 +24,13 @@
     "express": "^4.17.1",
     "express-rate-limit": "^6.3.0",
     "file-type": "^16.5.3",
+    "heic-convert": "^1.2.4",
     "mongoose": "^6.7.11",
     "node-cache": "^5.1.2",
     "node-fetch": "2.6.7",
     "nodemailer": "^6.7.3",
     "randomcolor": "^0.6.2",
+    "sanitize-filename": "^1.6.3",
     "sharp": "^0.31.2",
     "socket.io": "^4.4.1",
     "ts-node": "^10.7.0"
