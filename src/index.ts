@@ -35,7 +35,6 @@ import compression from "compression";
 import NodeCache from "node-cache";
 
 import contentEndpoint from "./endpoints/content";
-import { MessageSchemaType } from "./utils/index.d";
 import home from "./endpoints/home";
 import getMessages from "./endpoints/getMessages";
 import signup from "./endpoints/signup";
@@ -73,8 +72,6 @@ import notFound from "./endpoints/notFound";
 const app: express.Express = express();
 const httpServer: any = createServer(app);
 export const io = new Server(httpServer);
-
-export const messageCache = new NodeCache();
 
 dotenv.config();
 debug.init();

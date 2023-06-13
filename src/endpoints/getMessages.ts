@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { MessageSchemaType } from "../utils";
 import debug from "../utils/debug";
 import message from "../schema/messageSchema";
-import { messageCache } from "..";
+import { messageCache } from "../utils/cache";
 
 /**
  * This is the get message endpoint, this endpoint is used to get messages in the database.
