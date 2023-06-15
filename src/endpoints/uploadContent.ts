@@ -34,6 +34,11 @@ const uploadContent = async (
           return;
         }
 
+        if (!fs.existsSync(`${__dirname}/../../user-content/${req.body.user}`))
+          fs.mkdirSync(`${__dirname}/../../user-content/${req.body.user}`, {
+            recursive: true,
+          });
+
         let path: any;
         const fileExtension: string =
           req.query.type === "CHILL&CHAT_IMG" ? "webp" : "gif";
@@ -51,7 +56,7 @@ const uploadContent = async (
           return;
         }
 
-        if (req.headers["content-type"] !== "application/octet-stream") {
+        if (req.headers["Content-Type"] !== "application/octet-stream") {
           res.status(400).send("ERROR: Invalid content type.");
           return;
         }
